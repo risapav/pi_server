@@ -19,12 +19,6 @@ var {
   TX_Message,
   Telegram
 } = require('src/telegram');
-TX_Message.b_6++;
-console.log(  CONSTANTS,  RX_Message,  TX_Message,  Telegram);
-var i=0;
-setInterval(async () => {
-  console.log('interval >>>>>', i++);
-}, 1000);
 
 //nastavenie prenosu po seriovej linke
 const init = async () => {
@@ -34,6 +28,7 @@ const init = async () => {
   const delimiter = '\n';
 
   const ports = serialjs.find();
+  console.log(ports);
   if (ports.length) {
     try {
       let port = await serialjs.open(ports[0].port, delimiter);
