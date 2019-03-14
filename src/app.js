@@ -14,22 +14,10 @@ var {
   RX_Message,
   TX_Message,
   Telegram
-} = require('./telegram');
-/*
-server([
-  get('/', async ctx => await render('./public/index.html')),
-  post('/', async ctx => await json(ctx.data)),
-  get('/tx', async ctx => await json(TX_Message)),
-  get('/rx', async ctx => await json(RX_Message)),
-  // Receive a message from a single socket
-  socket('message', ctx => {
+} = require('src/telegram');
 
-    // Send the message to every socket
-    io.emit('message', ctx.data);
-  }),
-  get(async ctx => await status(404))
-]);
-*/
+
+
 //nastavenie prenosu po seriovej linke
 const init = async () => {
   console.log('init  >>>>>>>>>>');
@@ -70,7 +58,6 @@ const init = async () => {
       console.error(error);
     });
 
-
     setInterval(async () => {
       try {
         var msg = new Telegram;
@@ -91,7 +78,7 @@ const init = async () => {
         msg.setByteInTelegram(Telegram.STOP, Telegram.ETX);
         msg.encodeTelegram();
         console.log(msg.getBuffer().toString('ascii'));
-        port.send(msg.getBuffer().toString('ascii'));
+        await port.send(msg.getBuffer().toString('ascii'));
       } catch (e) {
         console.log(e);
       }
@@ -100,3 +87,18 @@ const init = async () => {
 };
 
 init();
+
+//start server
+server([
+  get('/', async ctx => await render('./public/index.html')),
+  post('/', async ctx => await json(ctx.data)),
+  get('/tx', async ctx => await json(TX_Message)),
+  get('/rx', async ctx => await json(RX_Message)),
+  // Receive a message from a single socket
+  socket('message', ctx => {
+
+    // Send the message to every socket
+    io.emit('message', ctx.data);
+  }),
+  get(async ctx => await status(404))
+]);
