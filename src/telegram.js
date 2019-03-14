@@ -1,7 +1,5 @@
 //telegram.js
-"use strict";
-
-//const CONSTANTS = require('./variables.js');
+'use strict';
 
 //telegram prijaty z Arduina
 var RX_Message = {
@@ -208,14 +206,3 @@ class Telegram {
 };
 
 module.exports={ CONSTANTS, RX_Message, TX_Message, Telegram }
-//module.exports = Telegram;
-
-/*
-Telegram.MSG_LEN = 24;
-Telegram.BUF_LEN = Telegram.MSG_LEN * 2 + 1;
-Telegram.ADD = 0x41; //temp char
-Telegram.STX = 0x2; //start of telegram
-Telegram.ETX = 0x3; //end of telegram
-Telegram.START = 0;
-Telegram.STOP = Telegram.MSG_LEN - 1;
-*/

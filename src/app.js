@@ -1,3 +1,4 @@
+//app.js
 const serialjs = require('serialport-js');
 const server = require('server');
 const {
@@ -30,14 +31,19 @@ server([
 ]);
 */
 //nastavenie prenosu po seriovej linke
-const init =  async () => {
+const init = async () => {
   console.log('init  >>>>>>>>>>');
   const interval = 1000; //1 sekunda
 
   const delimiter = '\n';
+
   const ports = serialjs.find();
   if (ports.length) {
-    let port =  serialjs.open(ports[0].port, delimiter);
+    try {
+      let port = await serialjs.open(ports[0].port, delimiter);
+    } catch (e) {
+      console.log(e);
+    }
     port.on('data', (data) => {
       console.log(data);
       var msg = new Telegram;
@@ -64,27 +70,31 @@ const init =  async () => {
       console.error(error);
     });
 
-    setInterval( () => {
 
-      var msg = new Telegram;
-      TX_Message.b_6++;
+    setInterval(async () => {
+      try {
+        var msg = new Telegram;
+        TX_Message.b_6++;
 
-  console.log('TX_Message', TX_Message.b_6);
-      msg.setByteInTelegram(Telegram.START, Telegram.STX);
-      msg.setUint16(0, TX_Message.b_0);
-      msg.setUint16(1, TX_Message.b_1);
-      msg.setUint16(2, TX_Message.b_2);
-      msg.setUint16(3, TX_Message.b_3);
-      msg.setUint16(4, TX_Message.b_4);
-      msg.setUint16(5, TX_Message.b_5);
-      msg.setUint16(6, TX_Message.b_6);
-      msg.setUint16(7, TX_Message.b_7);
-      msg.setUint16(8, TX_Message.b_8);
-      msg.setUint16(9, TX_Message.b_9);
-      msg.setByteInTelegram(Telegram.STOP, Telegram.ETX);
-      msg.encodeTelegram();
-      console.log(msg.getBuffer().toString('ascii'));
-      port.send(msg.getBuffer().toString('ascii'));
+        console.log('TX_Message', TX_Message.b_6);
+        msg.setByteInTelegram(Telegram.START, Telegram.STX);
+        msg.setUint16(0, TX_Message.b_0);
+        msg.setUint16(1, TX_Message.b_1);
+        msg.setUint16(2, TX_Message.b_2);
+        msg.setUint16(3, TX_Message.b_3);
+        msg.setUint16(4, TX_Message.b_4);
+        msg.setUint16(5, TX_Message.b_5);
+        msg.setUint16(6, TX_Message.b_6);
+        msg.setUint16(7, TX_Message.b_7);
+        msg.setUint16(8, TX_Message.b_8);
+        msg.setUint16(9, TX_Message.b_9);
+        msg.setByteInTelegram(Telegram.STOP, Telegram.ETX);
+        msg.encodeTelegram();
+        console.log(msg.getBuffer().toString('ascii'));
+        port.send(msg.getBuffer().toString('ascii'));
+      } catch (e) {
+        console.log(e);
+      }
     }, interval);
   }
 };
