@@ -14,7 +14,7 @@ var {
   TX_Message,
   Telegram
 } = require('./telegram');
-
+/*
 server([
   get('/', async ctx => await render('./public/index.html')),
   post('/', async ctx => await json(ctx.data)),
@@ -28,7 +28,7 @@ server([
   }),
   get(async ctx => await status(404))
 ]);
-
+*/
 //nastavenie prenosu po seriovej linke
 const init =  async () => {
   console.log('init  >>>>>>>>>>');
