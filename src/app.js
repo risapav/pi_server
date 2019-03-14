@@ -11,6 +11,7 @@ const {
   json
 } = require('server/reply');
 var {
+  CONSTANTS,
   RX_Message,
   TX_Message,
   Telegram
@@ -39,7 +40,7 @@ const init = async () => {
       msg.decodeTelegram();
       if (msg.isValidTelegram()) {
         console.log('is valid');
-        RX_Message.stx = msg.getByteInTelegram(Telegram.START);
+        RX_Message.stx = msg.getByteInTelegram(CONSTANTS.START);
         RX_Message.b_0 = msg.getUint16(0);
         RX_Message.b_1 = msg.getUint16(1);
         RX_Message.b_2 = msg.getUint16(2);
@@ -50,7 +51,7 @@ const init = async () => {
         RX_Message.b_7 = msg.getUint16(7);
         RX_Message.b_8 = msg.getUint16(8);
         RX_Message.b_9 = msg.getUint16(9);
-        RX_Message.etx = msg.getByteInTelegram(Telegram.STOP);
+        RX_Message.etx = msg.getByteInTelegram(CONSTANTS.STOP);
       }
     });
 
@@ -64,7 +65,7 @@ const init = async () => {
         TX_Message.b_6++;
 
         console.log('TX_Message', TX_Message.b_6);
-        msg.setByteInTelegram(Telegram.START, Telegram.STX);
+        msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
         msg.setUint16(0, TX_Message.b_0);
         msg.setUint16(1, TX_Message.b_1);
         msg.setUint16(2, TX_Message.b_2);
@@ -75,7 +76,7 @@ const init = async () => {
         msg.setUint16(7, TX_Message.b_7);
         msg.setUint16(8, TX_Message.b_8);
         msg.setUint16(9, TX_Message.b_9);
-        msg.setByteInTelegram(Telegram.STOP, Telegram.ETX);
+        msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
         msg.encodeTelegram();
         console.log(msg.getBuffer().toString('ascii'));
         await port.send(msg.getBuffer().toString('ascii'));
