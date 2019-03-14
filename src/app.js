@@ -1,23 +1,30 @@
 //app.js
 const serialjs = require('serialport-js');
 const server = require('server');
+
 const {
   get,
   post,
   socket
 } = require('server/router');
+
 const {
   render,
   json
 } = require('server/reply');
+
 var {
   CONSTANTS,
   RX_Message,
   TX_Message,
   Telegram
 } = require('src/telegram');
-
-
+TX_Message.b_6++;
+console.log(  CONSTANTS,  RX_Message,  TX_Message,  Telegram);
+var i=0;
+setInterval(async () => {
+  console.log('interval >>>>>', i++);
+}, 1000);
 
 //nastavenie prenosu po seriovej linke
 const init = async () => {
