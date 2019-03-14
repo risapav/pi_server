@@ -1,5 +1,5 @@
 //app.js
-const serialjs = require('serialport-js');
+//const serialjs = require('serialport-js');
 const server = require('server');
 
 const {
@@ -20,6 +20,18 @@ var {
   Telegram
 } = require('src/telegram');
 
+
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const port = new SerialPort(path, { baudRate: 115200 });
+
+const parser = new Readline()
+port.pipe(parser)
+
+parser.on('data', line => console.log(`> ${line}`))
+port.write('ROBOT POWER ON\n')
+//> ROBOT ONLINE
+/*
 //nastavenie prenosu po seriovej linke
 const init = async () => {
   console.log('init  >>>>>>>>>>');
@@ -90,7 +102,7 @@ const init = async () => {
 };
 
 init();
-
+*/
 //start server
 server([
   get('/', async ctx => await render('./public/index.html')),
