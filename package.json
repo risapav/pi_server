@@ -1,0 +1,20 @@
+{
+	"name": "pi_server",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/risapav/pi_server"
+	},
+	"scripts": {
+		"cmd": "stty -F /dev/ttyACM0 115200",
+		"serve": "node pi_server.js"
+	},
+	"engines": {
+		"node": ">=4.0.0"
+	},
+	"author": "risapav",
+	"license": "MIT",
+	"dependencies": {
+		"server": "^1.0.18"
+	}
+}
