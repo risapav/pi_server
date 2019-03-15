@@ -8,27 +8,49 @@
 <body>
   <div class="header">
     <h1>Smart dom</h1>
-</div>
-
-<div class="row">
-  <div class="column" style="background-color:#aaa;">
-    <h1>Svetlá</h1>
-  </div>
-  <div class="column" style="background-color:#bbb;">
-    <h1>Garáž</h1>
   </div>
 
-</div>
-<div class="row">
-  <div class="column" style="background-color:#ccc;">
-    <h1>Teplota izby</h1>
-    <p>Nastavená teplota:<input type="number" name="setpoint" min="5" max="35"></p>
-    <p>Aktuálna teplota:<output name="temp" for="a b"></output></p>
+  <div class="row">
+    <div class="column" style="background-color:#aaa;">
+      <h3>Svetlá</h3>
+      <label for="scales">Zapnúť svetlo</label>
+      <input type="checkbox" id="svetlo" name="svetlo" checked>
+
+    </div>
+    <div class="column" style="background-color:#bbb;">
+      <h3>Garáž</h3>
+      <div class="table_rooms">
+        <table class="table_h">
+          <tr>
+            <th id="active_miestnost"></th>
+            <td id="time_1"></td>
+          </tr>
+          <tr>
+            <th>Teplota</th>
+            <td id="temp_1"></td>
+          </tr>
+          <tr>
+            <th>Vlhkost</th>
+            <td id="humidity_1"></td>
+          </tr>
+          <tr>
+            <th>Svietivosť</th>
+            <td id="light_1"></td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+    <div class="column" style="background-color:#ccc;">
+      <h3>Teplota izby</h3>
+      <p>Aktuálna teplota:<output name="temp" for="a b"></output></p>
+      <p>Nastavená teplota:<input type="number" name="setpoint" min="5" max="35"></p>
+
+    </div>
   </div>
-</div>
-<div class="footer">
-  <p>Footer</p>
-</div>
+  <div class="footer">
+    <p>Footer</p>
+  </div>
 
 
   <p><input type="checkbox" id="light"></p>
