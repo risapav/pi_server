@@ -17,7 +17,6 @@
   "dependencies": {
     "@serialport/parser-readline": "^2.0.2",
     "serialport": "^7.1.4",
-    "serialport-js": "^1.1.0",
     "server": "^1.0.18"
   },
   "description": "",
