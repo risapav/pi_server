@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>Smart dom</h1>
+  <p><input type="checkbox" id="light"></p>
+  <p>Nastavená teplota:<input type="number" name="setpoint" min="5" max="35"></p>
+  <p>Aktuálna teplota:<output name="temp" for="a b"></output></p>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
+  <script>
+    //telegram odosielany do Arduina
+    var Message = {
+      //allways STX
+      stx: 0, // 0
+      len: 0, // 1
+      //payload
+      b_0: 0, // 2
+      b_1: 0, // 4
+      b_2: 0, // 6
+      b_3: 0, // 8
+      b_4: 0, //10
+      b_5: 0, //12
+      b_6: 0, //14
+      b_7: 0, //16
+      b_8: 0, //18
+      b_9: 0, //20
+      //allways ETX
+      ctc: 0, //22
+      etx: 0 //23
+    };
+    var socket = io(); //load socket.io-client and connect to the host that serves the page
+    window.addEventListener("load", function() { //when page loads
+      var lightbox = document.getElementById("light");
+      lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
+        socket.emit("MSG", JSON.stringify(Message)); //send button status to server (as 1 or 0)
+      });
+    });
+    socket.on('MSG', function(data) { //get button status from client
+      document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
+      socket.emit("MSG", JSON.stringify(Message)); //send push button status to back to server
+    });
+  </script>
+
+</html>
+</body>
+
+</html>

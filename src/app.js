@@ -59,12 +59,12 @@ const init = () => {
   const interval = 1000; //1 sekunda
 
   parser.on('data', (data) => {
-    console.log(data);
     var msg = new Telegram;
     msg.setBuffer(data);
     msg.decodeTelegram();
     if (msg.isValidTelegram()) {
-      console.log('is valid');
+      var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
+      console.log('server rx is valid > ', string);
       RX_Message.stx = msg.getByteInTelegram(CONSTANTS.START);
       RX_Message.b_0 = msg.getUint16(0);
       RX_Message.b_1 = msg.getUint16(1);
@@ -84,7 +84,7 @@ const init = () => {
     var msg = new Telegram;
     TX_Message.b_6++;
 
-    console.log('TX_Message', TX_Message.b_6);
+    //    console.log('TX_Message', TX_Message.b_6);
     msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
     msg.setUint16(0, TX_Message.b_0);
     msg.setUint16(1, TX_Message.b_1);
@@ -98,12 +98,10 @@ const init = () => {
     msg.setUint16(9, TX_Message.b_9);
     msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
     msg.encodeTelegram();
-    port.write(msg.getBuffer().toString('ascii') + '\n', (err) => {
-      if (err) {
-        return console.log('Error on write: ', err.message);
-      }
-      console.log(msg.getBuffer().toString('ascii') + '\n', err, msg);
-    })
+
+    var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
+    port.write(string);
+    console.log('server rx is valid > ', string);
 
   }, interval);
 }
