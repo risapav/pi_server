@@ -64,7 +64,7 @@ const init = () => {
     msg.decodeTelegram();
     if (msg.isValidTelegram()) {
       var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
-      console.log('server rx is valid > ', string);
+  //    console.log('server rx is valid > ', string);
       RX_Message.stx = msg.getByteInTelegram(CONSTANTS.START);
       RX_Message.b_0 = msg.getUint16(0);
       RX_Message.b_1 = msg.getUint16(1);
@@ -101,7 +101,7 @@ const init = () => {
 
     var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
     port.write(string);
-    console.log('server rx is valid > ', string);
+  //  console.log('server tx is valid > ', string);
 
   }, interval);
 }
