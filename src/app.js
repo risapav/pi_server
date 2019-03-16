@@ -1,38 +1,71 @@
 //app.js
-const server = require('server');
-const SerialPort = require('serialport');
-const Readline = require('@serialport/parser-readline');
-
-const {
-  get,
-  post,
-  socket
-} = require('server/router');
-
-const {
-  render,
-  json
-} = require('server/reply');
+'use strict';
 
 var {
   CONSTANTS,
   RX_Message,
   TX_Message,
   Telegram
-} = require('src/telegram');
+} = require('./telegram.js');
 
-var comport;
-
-//nastavenie prenosu po seriovej linke
-const init = () => {
-  console.log(process.platform);
+// ak sa nieco zmenilo v poveloch pre arduino
+var cmd_set = false;
+//konstanty pre kodovanie povelu pre Arduino
+const CMD = {
+  GAR_ON: 0x0001,
+  GAR_OFF: 0x0002,
+  LIT_ON: 0x0004,
+  LIT_OFF: 0x0008,
+  TEM_SET: 0x000A
+}
+//telegram odosielany do Arduina
+var tx_msg = {
+  //otvorit garaz
+  gar_on: false,
+  //zatvorit garaz
+  gar_off: false,
+  //zapnut svetla
+  lit_on: false,
+  //vypnut svela
+  lit_off: false,
+  //pozadovana teplota chcem zamenit
+  tem_set: false,
+  //pozadovana teplota setpoint
+  tem_spt: 0
+};
+//telegram prijimany do Arduina
+var rx_msg = {
+  //feedback garaz otvorena
+  gar_on: false,
+  //feedback garaz zatvorena
+  gar_off: false,
+  //feedback svetla zapnute
+  lit_on: false,
+  //feedback svetla vypnute
+  lit_off: false,
+  //feedback nastavena teplota
+  tem_spt: false,
+  //feedback aktualna teplota
+  tem_act: 0,
+  //feedback aktualny osvit
+  amb_lit: 0
+};
+//nastavenie prenosu po seriovej linke pre komunikovanie s arduinom
+const init_arduino_communication = () => {
+  //zavolanie komunikacnych kniznic
+  const SerialPort = require('serialport');
+  const Readline = require('@serialport/parser-readline');
+  //cesta ku seriovemu portu
+  var comport;
+  //priprav seriovu komunikaciu nezavisle na platforme a os
+  //console.log(process.platform);
   if (process.platform === "win32") {
     comport = 'COM7';
   } else {
     comport = '/dev/ttyACM0';
   }
-  console.log('comport ', comport);
-
+  //console.log('comport ', comport);
+  // otvor a nastav seriovy port
   SerialPort.list().then(
     ports => ports.forEach(console.log),
     err => console.error(err)
@@ -45,26 +78,23 @@ const init = () => {
       return console.log('Error: ', err.message);
     }
   });
-
+  // pri prichodzich spravach nas zaujima len string ukonceny znakom '\n'
   const parser = port.pipe(new Readline({
     delimiter: '\n'
   }));
-
   // Open errors will be emitted as an error event
-  port.on('error', function(err) {
+  port.on('error', (err) => {
     console.log('Error: ', err.message);
   });
 
-  console.log('init  >>>>>>>>>>');
-  const interval = 1000; //1 sekunda
-
+  // spracovanie prichodzej spravy
   parser.on('data', (data) => {
     var msg = new Telegram;
     msg.setBuffer(data);
     msg.decodeTelegram();
     if (msg.isValidTelegram()) {
       var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
-  //    console.log('server rx is valid > ', string);
+      //    console.log('server rx is valid > ', string);
       RX_Message.stx = msg.getByteInTelegram(CONSTANTS.START);
       RX_Message.b_0 = msg.getUint16(0);
       RX_Message.b_1 = msg.getUint16(1);
@@ -79,46 +109,84 @@ const init = () => {
       RX_Message.etx = msg.getByteInTelegram(CONSTANTS.STOP);
     }
   });
-
+  //kazdu sekundu odosli telegram s prikazmi do arduina
+  const interval = 1000; //1 sekunda = 1000ms
   setInterval(() => {
-    var msg = new Telegram;
-    TX_Message.b_6++;
-
-    //    console.log('TX_Message', TX_Message.b_6);
-    msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
-    msg.setUint16(0, TX_Message.b_0);
-    msg.setUint16(1, TX_Message.b_1);
-    msg.setUint16(2, TX_Message.b_2);
-    msg.setUint16(3, TX_Message.b_3);
-    msg.setUint16(4, TX_Message.b_4);
-    msg.setUint16(5, TX_Message.b_5);
-    msg.setUint16(6, TX_Message.b_6);
-    msg.setUint16(7, TX_Message.b_7);
-    msg.setUint16(8, TX_Message.b_8);
-    msg.setUint16(9, TX_Message.b_9);
-    msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
-    msg.encodeTelegram();
-
-    var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
-    port.write(string);
-  //  console.log('server tx is valid > ', string);
-
+    //ak chceme nieco v arduine zmenit
+    if (cmd_set) {
+      //vynuluj poziadavku na zmenu
+      cmd_set = false;
+      //zakodovany povel pre arduino v 16bitovej premennej
+      var cmd_var = 0;
+      //priprav telegram na odoslanie
+      var msg = new Telegram;
+      msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
+      msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
+      //ak sa ma zmenit setpoint teploty
+      if (tx_msg.tem_set) {
+        //nastav prislosny bit v 16 bit commande
+        cmd_var |= CMD.TEM_SET;
+        msg.setUint16(6, tx_msg.tem_spt);
+        //vynuluj poziadavky
+        tx_msg.tem_set = false;
+        tx_msg.tem_spt = 0;
+      }
+      //ak sa ma zapnut svetlo
+      if (tx_msg.lit_on) {
+        cmd_var |= CMD.LIT_ON;
+        tx_msg.lit_on = false;
+      }
+      //ak sa ma vypnut svetlo
+      if (tx_msg.lit_off) {
+        cmd_var |= CMD.LIT_OFF;
+        tx_msg.lit_off = false;
+      }
+      //uloz zakodovany prikaz do telegramu a zakoduj telegram na odoslanie
+      msg.setUint16(9, cmd_var);
+      msg.encodeTelegram();
+      var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
+      //odosli telegram do arduina
+      port.write(string);
+      //  console.log('server tx is valid > ', string);
+    }
+    //toto opakuj kazdu sekundu ak mas co poslat
   }, interval);
 }
+//komunikacia s arduinom po seriovej linke spust
+init_arduino_communication();
 
-init();
+//udalosti spracovane od frontend zariadeni, HTTP server
+const server = require('server');
+const {
+  error,
+  get,
+  post,
+  socket
+} = require('server/router');
 
-//start server
+const {
+  render,
+  status,
+  json
+} = require('server/reply');
+
+function processRequest (a,b,c,d) {
+  console.log ('processRequest', a,b,c,d);
+}
+//spusti HTTP server
 server([
+  error(ctx => status(500).send(ctx.error.message)),
   get('/', async ctx => await render('./public/index.html')),
-  post('/', async ctx => await json(ctx.data)),
-  get('/tx', async ctx => await json(TX_Message)),
-  get('/rx', async ctx => await json(RX_Message)),
-  // Receive a message from a single socket
+  //  post('/', async ctx => await {
+  //    json(ctx.data);
+  //  }),
+  get('/rx', async ctx => json(rx_msg)),
+  post('/tx', processRequest, ctx => status(200)),
+
   socket('message', ctx => {
 
     // Send the message to every socket
     io.emit('message', ctx.data);
   }),
-  get(async ctx => await status(404))
+  get(async ctx => status(404))
 ]);
