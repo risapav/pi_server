@@ -154,10 +154,25 @@ function do_gar_off() {
 }
 
 function do_tem_set() {
+  var $el = $('#in_tem_spt');
+  var num = $el.val();
+  if(isNaN(num)){
+    num = 20;
+    $el.val(num);
+  }
+  if(num < 0){
+    num = 0;
+  }
+
+  if(num > 50){
+    num = 50;
+  }
+
+$el.val(num);
   //pozadovana teplota chcem zamenit
   tx_msg.tem_set = true;
   //pozadovana teplota setpoint
-  tx_msg.tem_spt = 50;
+  tx_msg.tem_spt = num;
   //vykonaj
   cmd_set = true;
 }

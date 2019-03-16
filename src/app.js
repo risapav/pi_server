@@ -219,9 +219,19 @@ const {
   status,
   json
 } = require('server/reply');
-
-function processRequest(a) {
-//  console.log('processRequest', a);
+//funkcia, ktora spracuje POST /tx
+function processRequest(msg) {
+  //console.log('processRequest', msg.data);
+  //nastav prislosny bit v 16 bit commande
+  //if (textStatus === 'success') {
+    Object.keys(msg.data).forEach(key => {
+      if (tx_msg.hasOwnProperty(key))
+        tx_msg[key] = msg.data[key];
+    });
+    console.log('tx_msg >> changed ', tx_msg);
+  //}
+  // ano posli povel pre arduino
+    cmd_set = true;
 }
 //spusti HTTP server
 server([

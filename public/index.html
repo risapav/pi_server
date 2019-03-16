@@ -37,7 +37,12 @@
       <h3>Teplota izby</h3>
       <output id="tem_spt"></output>
       <output id="tem_act"></output>
-      <button type="submit" onClick="do_tem_set()">Nastaviť</button>
+<!--      <form> -->
+        Nastav teplotu: (rozsah 0 až 50):
+   <input id="in_tem_spt" type="number" onClick="do_tem_set()" name="setpoint" min="0" max="50" value="20"><br>
+<!--     </form> -->
+
+  <!--    <button type="submit" onClick="do_tem_set()">Nastaviť</button> -->
     </div>
   </div>
   <div class="footer">
