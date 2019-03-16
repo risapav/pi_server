@@ -75,15 +75,14 @@ var rx_msg = {
   //feedback svetla vypnute
   lit_off: false,
   //feedback nastavena teplota
-  tem_spt: false,
+  tem_spt: 0,
   //feedback aktualna teplota
   tem_act: 0,
   //feedback aktualny osvit
   amb_lit: 0
 };
-//kazdu sekundu nacitaj stav z arduina
-setInterval(() => {
-  //odosli dotaz na server so aby poslal JSON rx_msg
+//nacitanie dat zo servera
+function load_rx_data() {
   $.ajax({
     dataType: "json",
     url: '/rx',
@@ -91,10 +90,10 @@ setInterval(() => {
       console.log('data /rx get request >', JSON.parse(data));
     },
     success: (data, textStatus, jQxhr) => {
-      if(textStatus==='success'){
+      if (textStatus === 'success') {
         Object.keys(data).forEach(key => {
-          if(rx_msg.hasOwnProperty(key))
-          rx_msg[key] = data[key];
+          if (rx_msg.hasOwnProperty(key))
+            rx_msg[key] = data[key];
         });
         console.log('rx_msg >> changed ', rx_msg);
       }
@@ -103,5 +102,62 @@ setInterval(() => {
       console.log('error /rx get request >', errorThrown);
     }
   });
+}
+//kazdu sekundu nacitaj stav z arduina
+setInterval(() => {
+  //odosli dotaz na server so aby poslal JSON rx_msg
+  load_rx_data();
+  redrawPage();
   //toto opakuj kazdu sekundu ak mas co poslat
 }, interval);
+
+//--------------------------------------------------------
+//dom
+//---------------------------------------------------------
+function redrawPage(){
+  Object.keys(rx_msg).forEach(key => {
+    var $el = $('#'+key);
+    $el.val(rx_msg[key]);
+  });
+}
+
+function refreshPage() {
+  load_rx_data();
+}
+
+function do_lit_on() {
+  //zapnut svetla
+  tx_msg.lit_on = true;
+  //vykonaj
+  cmd_set = true;
+}
+
+function do_lit_off() {
+  //vypnut svela
+  tx_msg.lit_off = true;
+  //vykonaj
+  cmd_set = true;
+}
+
+function do_gar_on() {
+  //otvorit garaz
+  tx_msg.gar_on = true;
+  //vykonaj
+  cmd_set = true;
+}
+
+function do_gar_off() {
+  //zatvorit garaz
+  tx_msg.gar_off = true;
+  //vykonaj
+  cmd_set = true;
+}
+
+function do_tem_set() {
+  //pozadovana teplota chcem zamenit
+  tx_msg.tem_set = true;
+  //pozadovana teplota setpoint
+  tx_msg.tem_spt = 50;
+  //vykonaj
+  cmd_set = true;
+}

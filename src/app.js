@@ -33,6 +33,37 @@ var tx_msg = {
   //pozadovana teplota setpoint
   tem_spt: 0
 };
+//konstanty pre kodovanie feedbacku od arduina
+const FBK = {
+  // zapnutie svetla
+  LIT_ON: 0b0000000000000001,
+  //garaz otvorena
+  GAR_ON: 0b0000000000001000,
+  //garaz zatvorena
+  GAR_OFF: 0b000000000010000,
+  //  zaluzie otvorena
+  SUN_ON: 0b0000000000100000,
+  //  zaluzie zatvorena
+  SUN_OFF: 0b0000000001000000,
+  // kurenie zapnute
+  HEAT_ON: 0b0000000010000000,
+  // chladenie zapnute
+  COOL_ON: 0b0000000100000000,
+  // ochrana zapnuta
+  SAFE_ON: 0b0000001000000000,
+  // rele_0
+  RELE_0: 0b0000010000000000,
+  // rele_1
+  RELE_1: 0b0000100000000000,
+  // rele_2
+  RELE_2: 0b0001000000000000,
+  // rele_3
+  RELE_3: 0b0010000000000000,
+  // rele_4
+  RELE_4: 0b0100000000000000,
+  // rele_5
+  RELE_5: 0b1000000000000000
+}
 //telegram prijimany do Arduina
 var rx_msg = {
   //feedback garaz otvorena
@@ -44,7 +75,7 @@ var rx_msg = {
   //feedback svetla vypnute
   lit_off: false,
   //feedback nastavena teplota
-  tem_spt: false,
+  tem_spt: 0,
   //feedback aktualna teplota
   tem_act: 0,
   //feedback aktualny osvit
@@ -107,6 +138,36 @@ const init_arduino_communication = () => {
       RX_Message.b_8 = msg.getUint16(8);
       RX_Message.b_9 = msg.getUint16(9);
       RX_Message.etx = msg.getByteInTelegram(CONSTANTS.STOP);
+
+      if (RX_Message.b_8 && FBK.LIT_ON) {
+        //feedback svetla zapnute
+        rx_msg.lit_on = true;
+        //feedback svetla vypnute
+        rx_msg.lit_off = false;
+      } else {
+        //feedback svetla zapnute
+        rx_msg.lit_on = false;
+        //feedback svetla vypnute
+        rx_msg.lit_off = true;
+      }
+      if (RX_Message.b_8 && FBK.GAR_ON) {
+        //feedback garaz otvorena
+        rx_msg.gar_on = true;
+      } else {
+        rx_msg.gar_on = false;
+      }
+      if (RX_Message.b_8 && FBK.GAR_OFF) {
+        //feedback garaz zatvorena
+        rx_msg.gar_off = true;
+      } else {
+        rx_msg.gar_off = false;
+      }
+      //feedback nastavena teplota
+      rx_msg.tem_spt = RX_Message.b_0;
+      //feedback aktualna teplota
+      rx_msg.tem_act = RX_Message.b_1;
+      //feedback aktualny osvit
+      rx_msg.amb_lit = RX_Message.b_2;
     }
   });
   //kazdu sekundu odosli telegram s prikazmi do arduina
@@ -170,8 +231,8 @@ const {
   json
 } = require('server/reply');
 
-function processRequest (a,b,c,d) {
-  console.log ('processRequest', a,b,c,d);
+function processRequest(a, b, c, d) {
+  console.log('processRequest', a, b, c, d);
 }
 //spusti HTTP server
 server([

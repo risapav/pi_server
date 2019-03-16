@@ -8,6 +8,7 @@
 <body>
   <div class="header">
     <h1>Smart dom</h1>
+    <button type="submit" onClick="refreshPage()">Refresh Button</button>
   </div>
 
   <div class="row">
@@ -15,37 +16,28 @@
       <h3>Svetlá</h3>
       <label for="scales">Zapnúť svetlo</label>
       <input type="checkbox" id="svetlo" name="svetlo" checked>
+      <output id="amb_lit"></output>
+      <output id="lit_on"></output>
+      <button type="submit" onClick="do_lit_on()">Vypnúť</button>
+      <output id="lit_off"></output>
+      <button type="submit" onClick="do_lit_off()">Zapnúť</button>
 
     </div>
     <div class="column" style="background-color:#bbb;">
       <h3>Garáž</h3>
       <div class="table_rooms">
-        <table class="table_h">
-          <tr>
-            <th id="active_miestnost"></th>
-            <td id="time_1"></td>
-          </tr>
-          <tr>
-            <th>Teplota</th>
-            <td id="temp_1"></td>
-          </tr>
-          <tr>
-            <th>Vlhkost</th>
-            <td id="humidity_1"></td>
-          </tr>
-          <tr>
-            <th>Svietivosť</th>
-            <td id="light_1"></td>
-          </tr>
-        </table>
+        <output id="gar_on"></output>
+        <button type="submit" onClick="do_gar_on()">Otvoriť</button>
+        <output id="gar_off"></output>
+        <button type="submit" onClick="do_gar_off()">Zatvoriť</button>
       </div>
 
     </div>
     <div class="column" style="background-color:#ccc;">
       <h3>Teplota izby</h3>
-      <p>Aktuálna teplota:<output name="temp" for="a b"></output></p>
-      <p>Nastavená teplota:<input type="number" name="setpoint" min="5" max="35"></p>
-
+      <output id="tem_spt"></output>
+      <output id="tem_act"></output>
+      <button type="submit" onClick="do_tem_set()">Nastaviť</button>
     </div>
   </div>
   <div class="footer">
@@ -56,8 +48,8 @@
   <p><input type="checkbox" id="light"></p>
 
 
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/main.js"></script>
+  <script src="js/jquery-3.3.1.min.js" async></script>
+  <script src="js/main.js" async></script>
 </body>
 
 </html>
