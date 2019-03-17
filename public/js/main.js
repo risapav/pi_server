@@ -1,14 +1,15 @@
 //main.js
 'use strict';
-// ak sa nieco zmenilo v poveloch pre arduino
-var cmd_set = false;
+//kazdych 1000ms odosle telegram do servera
+const SR_TX_TIMING = 1000
+const SR_RX_TIMING = 1000
 //konstanty pre kodovanie povelu pre Arduino
 const CMD = {
   GAR_ON: 0x0001,
   GAR_OFF: 0x0002,
   LIT_ON: 0x0004,
   LIT_OFF: 0x0008,
-  TEM_SET: 0x000A
+  TEM_SET: 0x0010
 }
 //telegram odosielany do Arduina
 var tx_msg = {
@@ -25,29 +26,57 @@ var tx_msg = {
   //pozadovana teplota setpoint
   tem_spt: 0
 };
+// ak sa nieco zmenilo v poveloch pre arduino
+var cmd_set = false;
 //kazdu sekundu odosli telegram s prikazmi do servera
-const interval = 1000; //1 sekunda = 1000ms
 setInterval(() => {
   //ak chceme nieco v arduine zmenit
   if (cmd_set) {
     //vynuluj poziadavku na zmenu
     cmd_set = false;
     //odosli dotaz na server so zakodovanim JSON tx_msg
-    $.ajax({
-      url: '/tx',
-      dataType: 'json',
-      type: 'post',
-      contentType: 'application/json',
-      data: JSON.stringify(tx_msg),
-      processData: false,
-      success: (data, textStatus, jQxhr) => {
-        console.log('success /tx post request >', data, textStatus, jQxhr);
-        //        $('#response pre').html( JSON.stringify( data ) );
-      },
-      error: (jqXhr, textStatus, errorThrown) => {
-        console.log('error /tx post request >', errorThrown);
-      }
-    });
+    //----------------------------------------------------
+    /*
+        var xxx = fetch('/tx', {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(tx_msg), // data can be `string` or {object}!
+            headers: {
+              "csrf-token": csrf,
+              'Content-Type': 'application/json'
+            }
+          }).then(res => res.json())
+          .then(response => console.log('Success:', JSON.stringify(response)))
+          .catch(error => console.error('Error:', error));
+
+        console.log('xxx> ', xxx);
+    */
+    //---------------------------------------------------
+
+    postData('/tx', tx_msg)
+      //      .then(data => console.log("/tx data > ", data)) // JSON-string from `response.json()` call
+      .catch(error => {
+        console.error(error, tx_msg);
+      });
+
+    function postData(url = ' ', data = {}) {
+      // Default options are marked with *
+      return fetch(url, {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors", // no-cors, cors, *same-origin
+          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: "include", // include, *same-origin, omit
+          headers: {
+            "csrf-token": csrf,
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+          },
+          redirect: "follow", // manual, *follow, error
+          referrer: "no-referrer", // no-referrer, *client
+          body: JSON.stringify(data), // body data type must match "Content-Type" header
+        })
+        .then(response => response.json()); // parses response to JSON
+    }
+
     //po odoslani vynuluj vsetky poziadavky
     //otvorit garaz
     tx_msg.gar_on = false;
@@ -63,7 +92,7 @@ setInterval(() => {
     tx_msg.tem_spt = 0;
   }
   //toto opakuj kazdu sekundu ak mas co poslat
-}, interval);
+}, SR_TX_TIMING);
 //telegram prijimany do Arduina
 var rx_msg = {
   //feedback garaz otvorena
@@ -83,25 +112,17 @@ var rx_msg = {
 };
 //nacitanie dat zo servera
 function load_rx_data() {
-  $.ajax({
-    dataType: "json",
-    url: '/rx',
-    data: (data) => {
-      console.log('data /rx get request >', JSON.parse(data));
-    },
-    success: (data, textStatus, jQxhr) => {
-      if (textStatus === 'success') {
-        Object.keys(data).forEach(key => {
-          if (rx_msg.hasOwnProperty(key))
-            rx_msg[key] = data[key];
-        });
-        console.log('rx_msg >> changed ', rx_msg);
-      }
-    },
-    error: (jqXhr, textStatus, errorThrown) => {
-      console.log('error /rx get request >', errorThrown);
-    }
-  });
+  fetch('/rx')
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      Object.keys(data).forEach(key => {
+        if (rx_msg.hasOwnProperty(key))
+          rx_msg[key] = data[key];
+      });
+      //console.log('rx_msg >> changed ', rx_msg);
+    });
 }
 //kazdu sekundu nacitaj stav z arduina
 setInterval(() => {
@@ -109,66 +130,66 @@ setInterval(() => {
   load_rx_data();
   redrawPage();
   //toto opakuj kazdu sekundu ak mas co poslat
-}, interval);
-
-//--------------------------------------------------------
-//dom
-//---------------------------------------------------------
-function redrawPage(){
+}, SR_RX_TIMING);
+//------------------------------------------------------------------------------
+// DOM
+//------------------------------------------------------------------------------
+// aktualizuje hodnoty v html tagoch
+function redrawPage() {
   Object.keys(rx_msg).forEach(key => {
-    var $el = $('#'+key);
+    let $el = $('#' + key);
     $el.val(rx_msg[key]);
   });
 }
-
+// nacita data zo servera
 function refreshPage() {
   load_rx_data();
 }
-
+// povel na zapnutie svetla
 function do_lit_on() {
   //zapnut svetla
   tx_msg.lit_on = true;
   //vykonaj
   cmd_set = true;
 }
-
+// povel na vypnutie svetla
 function do_lit_off() {
   //vypnut svela
   tx_msg.lit_off = true;
   //vykonaj
   cmd_set = true;
 }
-
+// povel na otvorenie garaze
 function do_gar_on() {
   //otvorit garaz
   tx_msg.gar_on = true;
   //vykonaj
   cmd_set = true;
 }
-
+// povel na zatvorenie garaze
 function do_gar_off() {
   //zatvorit garaz
   tx_msg.gar_off = true;
   //vykonaj
   cmd_set = true;
 }
-
+// nastavit setpoint
 function do_tem_set() {
-  var $el = $('#in_tem_spt');
-  var num = $el.val();
-  if(isNaN(num)){
+  let $el = $('#in_tem_spt');
+  let num = $el.val();
+  if (isNaN(num)) {
     num = 20;
     $el.val(num);
   }
-  if(num < 0){
+  if (num < 0) {
     num = 0;
   }
 
-  if(num > 50){
+  if (num > 50) {
     num = 50;
   }
 
-$el.val(num);
+  $el.val(num);
   //pozadovana teplota chcem zamenit
   tx_msg.tem_set = true;
   //pozadovana teplota setpoint

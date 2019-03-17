@@ -16,6 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "@serialport/parser-readline": "^2.0.2",
+    "handlebars": "^4.1.1",
+    "hbs": "^4.0.3",
     "serialport": "^7.1.4",
     "server": "^1.0.18"
   },

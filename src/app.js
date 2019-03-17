@@ -1,23 +1,49 @@
 //app.js
 'use strict';
-
-var {
-  CONSTANTS,
-  RX_Message,
-  TX_Message,
-  Telegram
-} = require('./telegram.js');
-
-// ak sa nieco zmenilo v poveloch pre arduino
-var cmd_set = false;
+//konstanty pre komunikovanie s ARDUINOM
+//kazdych 1000ms odosle telegram do Arduina
+const AR_TX_TIMING = 1000
 //konstanty pre kodovanie povelu pre Arduino
 const CMD = {
   GAR_ON: 0x0001,
   GAR_OFF: 0x0002,
   LIT_ON: 0x0004,
   LIT_OFF: 0x0008,
-  TEM_SET: 0x000A
+  TEM_SET: 0x0010
 }
+//konstanty pre kodovanie feedbacku od arduina
+const FBK = {
+  // zapnutie svetla
+  LIT_ON: 0x0001,
+  // garaz otvorena
+  GAR_ON: 0x0008,
+  // garaz zatvorena
+  GAR_OFF: 0x0010,
+  // zaluzie otvorena
+  SUN_ON: 0x0020,
+  // zaluzie zatvorena
+  SUN_OFF: 0x0040,
+  // kurenie zapnute
+  HEAT_ON: 0x0080,
+  // chladenie zapnute
+  COOL_ON: 0x0100,
+  // ochrana zapnuta
+  SAFE_ON: 0x0200,
+  // rele_0
+  RELE_0: 0x0400,
+  // rele_1
+  RELE_1: 0x0800,
+  // rele_2
+  RELE_2: 0x1000,
+  // rele_3
+  RELE_3: 0x2000,
+  // rele_4
+  RELE_4: 0x4000,
+  // rele_5
+  RELE_5: 0x8000
+}
+// ak sa nieco zmenilo v poveloch pre arduino, true pre odoslanie do arduina
+var cmd_set = false;
 //telegram odosielany do Arduina
 var tx_msg = {
   //otvorit garaz
@@ -33,41 +59,7 @@ var tx_msg = {
   //pozadovana teplota setpoint
   tem_spt: 0
 };
-//konstanty pre kodovanie feedbacku od arduina
-const FBK = {
-  // zapnutie svetla
-  LIT_ON: 0b0000000000000001,
-  //garaz otvorena
-  GAR_ON: 0b0000000000001000,
-  //GAR_ON: 0b0000100000000000,
-  //GAR_ON: 0b1111111111111111,
-  //garaz zatvorena
-  GAR_OFF: 0b000000000010000,
-  //GAR_OFF: 0b0001000000000000,
-  //  zaluzie otvorena
-  SUN_ON: 0b0000000000100000,
-  //  zaluzie zatvorena
-  SUN_OFF: 0b0000000001000000,
-  // kurenie zapnute
-  HEAT_ON: 0b0000000010000000,
-  // chladenie zapnute
-  COOL_ON: 0b0000000100000000,
-  // ochrana zapnuta
-  SAFE_ON: 0b0000001000000000,
-  // rele_0
-  RELE_0: 0b0000010000000000,
-  // rele_1
-  RELE_1: 0b0000100000000000,
-  // rele_2
-  RELE_2: 0b0001000000000000,
-  // rele_3
-  RELE_3: 0b0010000000000000,
-  // rele_4
-  RELE_4: 0b0100000000000000,
-  // rele_5
-  RELE_5: 0b1000000000000000
-}
-//telegram prijimany do Arduina
+//telegram prijimany z Arduina, vsetky feedbacky z arduina
 var rx_msg = {
   //feedback garaz otvorena
   gar_on: false,
@@ -75,34 +67,40 @@ var rx_msg = {
   gar_off: false,
   //feedback svetla zapnute alebo vypnute
   lit_on: false,
-    //feedback nastavena teplota
+  //feedback nastavena teplota
   tem_spt: 0,
   //feedback aktualna teplota
   tem_act: 0,
   //feedback aktualny osvit
   amb_lit: 0
 };
+//------------------------------------------------------------------------------
+// KOMUNIKACIA S ARDUINOM
+//------------------------------------------------------------------------------
+var {
+  CONSTANTS,
+  Telegram
+} = require('./telegram.js');
 //nastavenie prenosu po seriovej linke pre komunikovanie s arduinom
 const init_arduino_communication = () => {
   //zavolanie komunikacnych kniznic
   const SerialPort = require('serialport');
   const Readline = require('@serialport/parser-readline');
   //cesta ku seriovemu portu
-  var comport;
+  let comport;
   //priprav seriovu komunikaciu nezavisle na platforme a os
   //console.log(process.platform);
-  if (process.platform === "win32") {
+  if (process.platform === "win32") { // pre WINDOWS
     comport = 'COM7';
-  } else {
+  } else { // pre LINUX
     comport = '/dev/ttyACM0';
   }
-  //console.log('comport ', comport);
-  // otvor a nastav seriovy port
+  //urob listing vsetkych portov
   SerialPort.list().then(
     ports => ports.forEach(console.log),
     err => console.error(err)
   );
-
+  // otvor a nastav seriovy port
   const port = new SerialPort(comport, {
     baudRate: 115200
   }, (err) => {
@@ -118,65 +116,53 @@ const init_arduino_communication = () => {
   port.on('error', (err) => {
     console.log('Error: ', err.message);
   });
-
-  function getBitFromByte(num, mask){
-    return Boolean(num & mask) ;
+  //funkcia vrati bool ak je nastaveny bit v num podla masky
+  function getBitFromByte(num, mask) {
+    return Boolean(num & mask);
   }
-
   // spracovanie prichodzej spravy
   parser.on('data', (data) => {
-    var msg = new Telegram;
-    msg.setBuffer(data);
-    msg.decodeTelegram();
-    if (msg.isValidTelegram()) {
-      var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
-      //    console.log('server rx is valid > ', string);
-      RX_Message.stx = msg.getByteInTelegram(CONSTANTS.START);
-      RX_Message.b_0 = msg.getUint16(0);//feedback nastavena teplota
-      RX_Message.b_1 = msg.getUint16(1);//feedback aktualna teplota
-      RX_Message.b_2 = msg.getUint16(2);//feedback aktualny osvit
-      RX_Message.b_3 = msg.getUint16(3);
-      RX_Message.b_4 = msg.getUint16(4);
-      RX_Message.b_5 = msg.getUint16(5);
-      RX_Message.b_6 = msg.getUint16(6);
-      RX_Message.b_7 = msg.getUint16(7);
-      RX_Message.b_8 = msg.getUint16(8);//feedbacky z arduina
-      RX_Message.b_9 = msg.getUint16(9);//commandy do arduina
-      RX_Message.etx = msg.getByteInTelegram(CONSTANTS.STOP);
-      //feedback zapnute svetlo
-      rx_msg.lit_on = getBitFromByte(RX_Message.b_8, FBK.LIT_ON);
-      //feedback koncak garaz otvorena
-      rx_msg.gar_on = getBitFromByte(RX_Message.b_8, FBK.GAR_ON)
-      //feedback koncak garaz zatvorena
-      rx_msg.gar_off = getBitFromByte(RX_Message.b_8, FBK.GAR_OFF)
+    let ar_rx_msg = new Telegram;
+    ar_rx_msg.setBuffer(data);
+    ar_rx_msg.decodeTelegram();
+    if (ar_rx_msg.isValidTelegram()) {
+      // let string = String.fromCharCode.apply(null, new Uint8Array(ar_rx_msg.getBuffer()));
+      // console.log('server rx is valid > ', string);
 
+      //feedbacky z arduina
+      let fdb_var = ar_rx_msg.getUint16(8);
+      //feedback zapnute svetlo
+      rx_msg.lit_on = getBitFromByte(fdb_var, FBK.LIT_ON);
+      //feedback koncak garaz otvorena
+      rx_msg.gar_on = getBitFromByte(fdb_var, FBK.GAR_ON)
+      //feedback koncak garaz zatvorena
+      rx_msg.gar_off = getBitFromByte(fdb_var, FBK.GAR_OFF)
       //feedback nastavena teplota
-      rx_msg.tem_spt = RX_Message.b_0;
+      rx_msg.tem_spt = ar_rx_msg.getUint16(0);
       //feedback aktualna teplota
-      rx_msg.tem_act = RX_Message.b_1;
+      rx_msg.tem_act = ar_rx_msg.getUint16(1);
       //feedback aktualny osvit
-      rx_msg.amb_lit = RX_Message.b_2;
-//console.log(rx_msg);
+      rx_msg.amb_lit = ar_rx_msg.getUint16(2);
+      // console.log(rx_msg);
     }
   });
   //kazdu sekundu odosli telegram s prikazmi do arduina
-  const interval = 1000; //1 sekunda = 1000ms
   setInterval(() => {
     //ak chceme nieco v arduine zmenit
     if (cmd_set) {
       //vynuluj poziadavku na zmenu
       cmd_set = false;
       //zakodovany povel pre arduino v 16bitovej premennej
-      var cmd_var = 0;
+      let cmd_var = 0;
       //priprav telegram na odoslanie
-      var msg = new Telegram;
-      msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
-      msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
+      let ar_tx_msg = new Telegram;
+      ar_tx_msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
+      ar_tx_msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
       //ak sa ma zmenit setpoint teploty
       if (tx_msg.tem_set) {
         //nastav prislosny bit v 16 bit commande
         cmd_var |= CMD.TEM_SET;
-        msg.setUint16(6, tx_msg.tem_spt);
+        ar_tx_msg.setUint16(6, tx_msg.tem_spt);
         //vynuluj poziadavky
         tx_msg.tem_set = false;
         tx_msg.tem_spt = 0;
@@ -192,20 +178,23 @@ const init_arduino_communication = () => {
         tx_msg.lit_off = false;
       }
       //uloz zakodovany prikaz do telegramu a zakoduj telegram na odoslanie
-      msg.setUint16(9, cmd_var);
-      msg.encodeTelegram();
-      var string = String.fromCharCode.apply(null, new Uint8Array(msg.getBuffer()));
+      ar_tx_msg.setUint16(9, cmd_var);
+      ar_tx_msg.encodeTelegram();
+      let string = String.fromCharCode.apply(null, new Uint8Array(ar_tx_msg.getBuffer()));
       //odosli telegram do arduina
       port.write(string);
       //  console.log('server tx is valid > ', string);
     }
     //toto opakuj kazdu sekundu ak mas co poslat
-  }, interval);
+  }, AR_TX_TIMING);
 }
 //komunikacia s arduinom po seriovej linke spust
 init_arduino_communication();
-
+//------------------------------------------------------------------------------
+// SERVER HTTP
+//------------------------------------------------------------------------------
 //udalosti spracovane od frontend zariadeni, HTTP server
+var hbs = require('hbs');
 const server = require('server');
 const {
   error,
@@ -215,30 +204,35 @@ const {
 } = require('server/router');
 
 const {
-  render,
   status,
+  render,
   json
 } = require('server/reply');
-//funkcia, ktora spracuje POST /tx
-function processRequest(msg) {
-  //console.log('processRequest', msg.data);
-  //nastav prislosny bit v 16 bit commande
-  //if (textStatus === 'success') {
-    Object.keys(msg.data).forEach(key => {
-      if (tx_msg.hasOwnProperty(key))
-        tx_msg[key] = msg.data[key];
-    });
-    console.log('tx_msg >> changed ', tx_msg);
-  //}
-  // ano posli povel pre arduino
-    cmd_set = true;
-}
+
 //spusti HTTP server
-server([
+server({
+  port: 8080,
+  engine: 'hbs'
+  /*,
+  secret: 'secret-' + csrf
+  */
+}, [
   error(ctx => status(500).send(ctx.error.message)),
-  get('/', async ctx => await render('./public/index.html')),
-  get('/rx', async ctx => json(rx_msg)),
-  post('/tx', processRequest, ctx => status(200)),
+  //get('/', async ctx => await render('./public/index.html')),
+  get('/', ctx => render('index.hbs')),
+  get('/rx', async ctx => await json(rx_msg)),
+  post('/tx', async ctx => {
+    //nastav prislusny bit v 16 bit commande
+    Object.keys(ctx.data).forEach(key => {
+      if (tx_msg.hasOwnProperty(key))
+        tx_msg[key] = ctx.data[key];
+    });
+    // Show the submitted data on the console:
+    console.log(ctx.data);
+    return await json({
+      'ok': true
+    });
+  }),
 
   socket('message', ctx => {
 

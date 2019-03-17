@@ -20,21 +20,20 @@ h3 {
 
 /* Create three equal columns that floats next to each other */
 .column {
+  text-align: center;
   border-radius: 20px;
   float: left;
-    width: 50.0%;
+  width: 50.0%;
   background: #2A363B;
   padding: 10px;
   /*width: 200px;*/
   /*height: 150px; */
 }
 
-
-
 .bl3 {
-  .  float: center;
-    width: 100.0%;
-    padding: 10px;
+  . float: center;
+  width: 100.0%;
+  padding: 10px;
   /*  height: 300px; Should be removed. Only for demonstration */
 }
 
