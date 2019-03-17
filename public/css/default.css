@@ -12,7 +12,7 @@ h3 {
 
 /* Style the header */
 .header {
-  background-color: #f1f1f1;
+  background-color: #FFF;
   padding: 30px;
   text-align: center;
   font-size: 35px;
@@ -20,10 +20,22 @@ h3 {
 
 /* Create three equal columns that floats next to each other */
 .column {
+  border-radius: 20px;
   float: left;
-  width: 33.33%;
+    width: 50.0%;
+  background: #2A363B;
   padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
+  /*width: 200px;*/
+  /*height: 150px; */
+}
+
+
+
+.bl3 {
+  .  float: center;
+    width: 100.0%;
+    padding: 10px;
+  /*  height: 300px; Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -35,7 +47,8 @@ h3 {
 
 /* Style the footer */
 .footer {
-  background-color: #f1f1f1;
+  background-color: #363636;
+  border-radius: 25px;
   padding: 10px;
   text-align: center;
 }

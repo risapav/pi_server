@@ -7,50 +7,61 @@
 
 <body>
   <div class="header">
-    <h1>Smart dom</h1>
+    <h1>Smart Houm</h1>
     <button type="submit" onClick="refreshPage()">Refresh Button</button>
   </div>
 
-  <div class="row">
-    <div class="column" style="background-color:#aaa;">
+  <div class="row" style="color:#fff;">
+    <div class="column" style="background-color:#2A363B">
       <h3>Svetlá</h3>
-      <label for="scales">Zapnúť svetlo</label>
-      <input type="checkbox" id="svetlo" name="svetlo" checked>
-      <output id="amb_lit"></output>
-      <output id="lit_on"></output>
+    <h3>  <label for="scales">Okolitý jas</label>
+       <input type="checkbox" id="svetlo" name="svetlo" checked>
+      <output id="amb_lit"></output> </h3>
+    <h3>  <output id="lit_on"></output>
       <button type="submit" onClick="do_lit_on()">Vypnúť</button>
       <output id="lit_off"></output>
-      <button type="submit" onClick="do_lit_off()">Zapnúť</button>
+      <button type="submit" onClick="do_lit_off()">Zapnúť</button> </h3>
 
     </div>
-    <div class="column" style="background-color:#bbb;">
+    <div class="column" style="background-color:#2A363B;">
       <h3>Garáž</h3>
+      <h3> . </h3>
       <div class="table_rooms">
-        <output id="gar_on"></output>
+      <h3>  <output id="gar_on"></output>
         <button type="submit" onClick="do_gar_on()">Otvoriť</button>
         <output id="gar_off"></output>
-        <button type="submit" onClick="do_gar_off()">Zatvoriť</button>
+        <button type="submit" onClick="do_gar_off()">Zatvoriť</button> </h3>
       </div>
 
     </div>
-    <div class="column" style="background-color:#ccc;">
+    <div class="column" style="background-color:#fff;">
+      </div>
+
+    </div>
+
+  </div>
+  <div class="row" style="color:#fff;">
+    <div class="column bl3" style="background-color:# 2A363B;">
       <h3>Teplota izby</h3>
-      <output id="tem_spt"></output>
-      <output id="tem_act"></output>
+      <h3> Nastavená teplota / Aktuálna teplota <output id="tem_spt"></output>
+      <output id="tem_act"></output> </h3>
 <!--      <form> -->
-        Nastav teplotu: (rozsah 0 až 50):
-   <input id="in_tem_spt" type="number" onClick="do_tem_set()" name="setpoint" min="0" max="50" value="20"><br>
+    <h3>Nastav teplotu: (rozsah 0 až 50):</h3>
+
+  <h3>  <input id="in_tem_spt" type="number" onClick="do_tem_set()" name="setpoint" min="0" max="50" value="20"><br> </h3>
 <!--     </form> -->
 
   <!--    <button type="submit" onClick="do_tem_set()">Nastaviť</button> -->
+</div>
+<div class="column" style="background-color:#fff;">
+  </div>
     </div>
   </div>
-  <div class="footer">
-    <p>Footer</p>
+  <div class="footer" style="color:#fff;" >
+    <p>@ Peter Riša 2019</p>
   </div>
 
 
-  <p><input type="checkbox" id="light"></p>
 
 
   <script src="js/jquery-3.3.1.min.js" async></script>
