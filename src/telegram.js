@@ -2,48 +2,7 @@
 // ecmascript 2016
 // "strict": "error"
 "strict mode"
-//telegram prijaty z Arduina
-var RX_Message = {
-  //allways STX
-  stx: 1, // 0
-  len: 0, // 1
-  //payload
-  b_0: 0, // 2
-  b_1: 0, // 4
-  b_2: 0, // 6
-  b_3: 0, // 8
-  b_4: 0, //10
-  b_5: 0, //12
-  b_6: 0, //14
-  b_7: 0, //16
-  b_8: 0, //18
-  b_9: 0, //20
-  //allways ETX
-  ctc: 0, //22
-  etx: 1 //23
-}
-
-//telegram odosielany do Arduina
-var TX_Message = {
-  //allways STX
-  stx: 2, // 0
-  len: 0, // 1
-  //payload
-  b_0: 0, // 2
-  b_1: 0, // 4
-  b_2: 0, // 6
-  b_3: 0, // 8
-  b_4: 0, //10
-  b_5: 0, //12
-  b_6: 0, //14
-  b_7: 0, //16
-  b_8: 0, //18
-  b_9: 0, //20
-  //allways ETX
-  ctc: 0, //22
-  etx: 2 //23
-}
-
+//definicia konstant
 const MSG_LEN = 24 //dlzka bufferu telegramu v bajtoch
 const BUF_LEN = MSG_LEN * 2 + 1 //MSG_LEN * 2 + 1
 const ADD = 0x41 //temp char
@@ -51,6 +10,47 @@ const STX = 0x02 //MAGIC CHAR start of telegram
 const ETX = 0x03 //MAGIC CHAR end of telegram
 const START = 0 //index prveho bajtu v buffere
 const STOP = MSG_LEN - 1 //index posledneho bajtu v buffere
+//telegram prijaty z Arduina
+var RX_Message = {
+  //allways STX
+  stx: STX, // 0
+  len: 0, // 1
+  //payload
+  b_0: 0, // 2
+  b_1: 0, // 4
+  b_2: 0, // 6
+  b_3: 0, // 8
+  b_4: 0, //10
+  b_5: 0, //12
+  b_6: 0, //14
+  b_7: 0, //16
+  b_8: 0, //18
+  b_9: 0, //20
+  //allways ETX
+  ctc: 0, //22
+  etx: ETX //23
+}
+
+//telegram odosielany do Arduina
+var TX_Message = {
+  //allways STX
+  stx: STX, // 0
+  len: 0, // 1
+  //payload
+  b_0: 0, // 2
+  b_1: 0, // 4
+  b_2: 0, // 6
+  b_3: 0, // 8
+  b_4: 0, //10
+  b_5: 0, //12
+  b_6: 0, //14
+  b_7: 0, //16
+  b_8: 0, //18
+  b_9: 0, //20
+  //allways ETX
+  ctc: 0, //22
+  etx: ETX //23
+}
 
 class Telegram {
 

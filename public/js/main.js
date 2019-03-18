@@ -157,23 +157,21 @@ function doGarageClose() { // eslint-disable-line no-unused-vars
 function doTempSet() { // eslint-disable-line no-unused-vars
   let $el = $('#in_tem_spt')
   let num = $el.val()
-  if (isNaN(num)) {
-    num = 20
-    $el.val(num)
+  if (!isNaN(num)) {
+    if (num < 0) {
+      num = 0
+    }
+    if (num > 50) {
+      num = 50
+    }
+  } else {
+    num = 25
   }
-  if (num < 0) {
-    num = 0
-  }
-
-  if (num > 50) {
-    num = 50
-  }
-
   $el.val(num)
   //pozadovana teplota chcem zamenit
   tx_msg.tem_set = true
   //pozadovana teplota setpoint
-  tx_msg.tem_spt = num
+  tx_msg.tem_spt = Number(num)
   //vykonaj
   cmd_set = true
 }
