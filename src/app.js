@@ -203,8 +203,7 @@ const server = require('server')
 const {
   error,
   get,
-  post,
-  socket
+  post
 } = require('server/router')
 
 const {
@@ -232,11 +231,6 @@ server({
     return json({
       'ok': true
     })
-  }),
-
-  socket('message', ctx => {
-    // Send the message to every socket
-    io.emit('message', ctx.data)
   }),
   get(ctx => status(404)) // eslint-disable-line no-unused-vars
 ])
