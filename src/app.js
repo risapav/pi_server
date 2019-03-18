@@ -84,14 +84,11 @@ var rx_msg = {
 const SerialPort = require('serialport')
 //import * as SerialPort from 'serialport.js';
 const Readline = require('@serialport/parser-readline')
-const {
-  CONSTANTS,
-  Telegram
-} = require('./telegram.js')
+const Telegram = require('./telegram.js')
 //nastavenie prenosu po seriovej linke pre komunikovanie s arduinom
 const init_arduino_communication = () => {
   //cesta ku seriovemu portu
-  let comport
+  let comport = ''
   //priprav seriovu komunikaciu nezavisle na platforme a os
   //console.log(process.platform)
   if (process.platform === "win32") { // pre WINDOWS
@@ -107,7 +104,7 @@ const init_arduino_communication = () => {
   // otvor a nastav seriovy port
   const port = new SerialPort(comport, {
     baudRate: 115200
-  }, (err) => {
+  }, err => {
     if (err) {
       return console.log('Error: ', err.message)
     }
@@ -117,7 +114,7 @@ const init_arduino_communication = () => {
     delimiter: '\n'
   }))
   // Open errors will be emitted as an error event
-  port.on('error', (err) => {
+  port.on('error', err => {
     console.log('Error: ', err.message)
   })
   //funkcia vrati bool ak je nastaveny bit v num podla masky
@@ -125,7 +122,7 @@ const init_arduino_communication = () => {
     return Boolean(num & mask)
   }
   // spracovanie prichodzej spravy
-  parser.on('data', (data) => {
+  parser.on('data', data => {
     let ar_rx_msg = new Telegram
     ar_rx_msg.setBuffer(data)
     ar_rx_msg.decodeTelegram()
@@ -160,8 +157,6 @@ const init_arduino_communication = () => {
       let cmd_var = 0
       //priprav telegram na odoslanie
       let ar_tx_msg = new Telegram
-      ar_tx_msg.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX)
-      ar_tx_msg.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX)
       //ak sa ma zmenit setpoint teploty
       if (tx_msg.tem_set) {
         //nastav prislosny bit v 16 bit commande
