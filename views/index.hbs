@@ -21,19 +21,18 @@
 
         <output id="amb_lit"></output> </h3>
       <output id="lit_on"></output>
-      <button type="submit" onClick="do_lit_on()">Vypnúť</button>
+      <button type="submit" onClick="doLightOn()">Vypnúť</button>
       <output id="lit_off"></output>
-      <button type="submit" onClick="do_lit_off()">Zapnúť</button>
+      <button type="submit" onClick="doLightOff()">Zapnúť</button>
 
     </div>
     <div class="column" style="background-color:#2A363B;">
       <h3>Garáž</h3>
-      <h3> . </h3>
       <div class="table_rooms">
         <h3> <output id="gar_on"></output>
-          <button type="submit" onClick="do_gar_on()">Otvoriť</button>
+          <button type="submit" onClick="doGarageOpen()">Otvoriť</button>
           <output id="gar_off"></output>
-          <button type="submit" onClick="do_gar_off()">Zatvoriť</button> </h3>
+          <button type="submit" onClick="doGarageClose()">Zatvoriť</button> </h3>
       </div>
 
     </div>
@@ -51,10 +50,8 @@
       <!--      <form> -->
       <h3>Nastav teplotu: (rozsah 0 až 50):</h3>
 
-      <h3> <input id="in_tem_spt" type="number" onClick="do_tem_set()" name="setpoint" min="0" max="50" value="20"><br> </h3>
-      <!--     </form> -->
+      <h3> <input id="in_tem_spt" type="number" onClick="doTempSet()" name="setpoint" min="0" max="50" value="20"><br> </h3>
 
-      <!--    <button type="submit" onClick="do_tem_set()">Nastaviť</button> -->
     </div>
     <div class="column" style="background-color:#fff;">
     </div>

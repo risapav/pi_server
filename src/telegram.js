@@ -1,6 +1,7 @@
 //telegram.js
-'use strict';
-
+// ecmascript 2016
+// "strict": "error"
+"strict mode"
 //telegram prijaty z Arduina
 var RX_Message = {
   //allways STX
@@ -20,7 +21,7 @@ var RX_Message = {
   //allways ETX
   ctc: 0, //22
   etx: 1 //23
-};
+}
 
 //telegram odosielany do Arduina
 var TX_Message = {
@@ -41,7 +42,7 @@ var TX_Message = {
   //allways ETX
   ctc: 0, //22
   etx: 2 //23
-};
+}
 
 let CONSTANTS = {
   MSG_LEN: 24,
@@ -51,158 +52,163 @@ let CONSTANTS = {
   ETX: 0x3, //end of telegram
   START: 0,
   STOP: 23 //MSG_LEN - 1
-};
+}
 
 class Telegram {
 
   constructor() {
     // create an ArrayBuffer with a size in bytes
-    this.msg = new ArrayBuffer(CONSTANTS.MSG_LEN);
+    this.msg = new ArrayBuffer(CONSTANTS.MSG_LEN)
     //
-    this.buf = new ArrayBuffer(CONSTANTS.BUF_LEN);
+    this.buf = new ArrayBuffer(CONSTANTS.BUF_LEN)
     //preset telegram header
-    this.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX);
+    this.setByteInTelegram(CONSTANTS.START, CONSTANTS.STX)
     //preset telegram footer
-    this.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX);
+    this.setByteInTelegram(CONSTANTS.STOP, CONSTANTS.ETX)
   }
   logTelegram() {
-    var telegram = new Uint8Array(this.getBuffer(), 0, CONSTANTS.MSG_LEN);
-    for (var i = 0; i < CONSTANTS.MSG_LEN; i++) {
-      console.log("telegram>> ", telegram[i]);
+    let telegram = new Uint8Array(this.getBuffer(), 0, CONSTANTS.MSG_LEN)
+    for (let i = 0; i < CONSTANTS.MSG_LEN; i++) {
+      console.log("telegram>> ", telegram[i])
     }
   }
   logBuffer() {
-    var buffer = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN);
-    for (var i = 0; i < CONSTANTS.BUF_LEN; i++) {
-      console.log("buffer>> ", buffer[i]);
+    let buffer = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN)
+    for (let i = 0; i < CONSTANTS.BUF_LEN; i++) {
+      console.log("buffer>> ", buffer[i])
     }
   }
 
   getTelegram() {
-    return this.msg;
+    return this.msg
   }
 
   getBuffer() {
-    return this.buf;
+    return this.buf
   }
 
   setBuffer(str) {
-    var buffer = new DataView(this.getBuffer(), 0, CONSTANTS.BUF_LEN);
+    let buffer = new DataView(this.getBuffer(), 0, CONSTANTS.BUF_LEN)
 
-    const buf = Buffer.from(str, 'ascii');
-    var i = 0;
+    const buf = Buffer.from(str, 'ascii')
+    let i = 0
     for (const b of buf) {
       if (i < CONSTANTS.BUF_LEN) {
-        buffer.setUint8(i, b);
+        buffer.setUint8(i, b)
       }
-      i++;
+      i++
     }
   }
 
   setTelegram(str) {
-    var telegram = new DataView(this.getTelegram(), 0, CONSTANTS.MSG_LEN);
+    let telegram = new DataView(this.getTelegram(), 0, CONSTANTS.MSG_LEN)
 
-    const buf = Buffer.from(str, 'ascii');
-    var i = 0;
+    const buf = Buffer.from(str, 'ascii')
+    let i = 0
     for (const b of buf) {
       if (i < CONSTANTS.MSG_LEN) {
-        telegram.setUint8(i, b);
+        telegram.setUint8(i, b)
       }
-      i++;
+      i++
     }
   }
 
   setByteInTelegram(num, val) {
     if (!isNaN(num) && (num >= 0) && (num < CONSTANTS.MSG_LEN)) {
-      var uint8 = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN);
-      return uint8[num] = val & 0xFF;
+      let uint8 = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN)
+      return uint8[num] = val & 0xFF
     }
-    return undefined;
+    return undefined
   }
 
   getByteInTelegram(num) {
     if (!isNaN(num) && (num >= 0) && (num < CONSTANTS.MSG_LEN)) {
-      var uint8 = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN);
-      return uint8[num];
+      let uint8 = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN)
+      return uint8[num]
     }
-    return undefined;
+    return undefined
   }
 
   setByteInBuffer(num, val) {
     if (!isNaN(num) && (num >= 0) && (num < CONSTANTS.BUF_LEN)) {
-      var uint8 = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN);
-      return uint8[num] = val & 0xFF;
+      let uint8 = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN)
+      return uint8[num] = val & 0xFF
     }
-    return undefined;
+    return undefined
   }
 
   getByteInBuffer(num) {
     if (!isNaN(num) && (num >= 0) && (num < CONSTANTS.BUF_LEN)) {
-      var uint8 = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN);
-      return uint8[num];
+      let uint8 = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN)
+      return uint8[num]
     }
-    return undefined;
+    return undefined
   }
 
   getUint16(num) {
     if (!isNaN(num) && (num < 10) && (num >= 0)) {
-      var uint16 = new Uint16Array(this.getTelegram(), 2, 10);
-      return uint16[num];
+      let uint16 = new Uint16Array(this.getTelegram(), 2, 10)
+      return uint16[num]
     } else {
-      return undefined;
+      return undefined
     }
   }
 
   setUint16(num, val) {
     if (!isNaN(num) && (num < 10) && (num >= 0)) {
-      var uint16 = new Uint16Array(this.getTelegram(), 2, 10);
-      return uint16[num] = val;
+      let uint16 = new Uint16Array(this.getTelegram(), 2, 10)
+      return uint16[num] = val
     } else {
-      return undefined;
+      return undefined
     }
   }
 
   isValidTelegram() {
     if (this.getByteInTelegram(CONSTANTS.START) !== CONSTANTS.STX) {
-      return false;
+      return false
     }
     if (this.getByteInTelegram(CONSTANTS.STOP) !== CONSTANTS.ETX) {
-      return false;
+      return false
     }
-    return true;
+    return true
   }
 
   encodeTelegram() {
-    var a, b, c;
-    var telegram = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN);
-    var buffer = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN);
+    let a, b, c
+    let telegram = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN)
+    let buffer = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN)
 
-    for (var i = 0, j = 0; i < CONSTANTS.MSG_LEN; i++) {
-      c = telegram[i];
-      a = c & 0x0F;
-      b = (c >> 4) & 0x0F;
-      buffer[j] = (a + CONSTANTS.ADD) & 0xFF;
-      j++;
-      buffer[j] = (b + CONSTANTS.ADD) & 0xFF;
-      j++;
+    for (let i = 0, j = 0; i < CONSTANTS.MSG_LEN; i++) {
+      c = telegram[i]
+      a = c & 0x0F
+      b = (c >> 4) & 0x0F
+      buffer[j] = (a + CONSTANTS.ADD) & 0xFF
+      j++
+      buffer[j] = (b + CONSTANTS.ADD) & 0xFF
+      j++
     }
-    return buffer;
+    return buffer
   }
 
   decodeTelegram() {
-    var a, b, c;
-    var telegram = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN);
-    var buffer = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN);
+    let a, b
+    let telegram = new Uint8Array(this.getTelegram(), 0, CONSTANTS.MSG_LEN)
+    let buffer = new Uint8Array(this.getBuffer(), 0, CONSTANTS.BUF_LEN)
 
-    for (var i = 0, j = 0; i < CONSTANTS.MSG_LEN; i++) {
-      a = (buffer[j] - CONSTANTS.ADD) & 0x0F;
-      j++;
-      b = (buffer[j] - CONSTANTS.ADD) & 0x0F;
-      j++;
-      telegram[i] = a | (b << 4);
+    for (let i = 0, j = 0; i < CONSTANTS.MSG_LEN; i++) {
+      a = (buffer[j] - CONSTANTS.ADD) & 0x0F
+      j++
+      b = (buffer[j] - CONSTANTS.ADD) & 0x0F
+      j++
+      telegram[i] = a | (b << 4)
     }
-    return telegram;
+    return telegram
   }
-};
+}
 
-module.exports={ CONSTANTS, RX_Message, TX_Message, Telegram }
+module.exports = {
+  CONSTANTS,
+  RX_Message,
+  TX_Message,
+  Telegram
+}
