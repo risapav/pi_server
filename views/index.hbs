@@ -8,6 +8,7 @@
 <script>
   window.csrf = '{{csrf}}';
 </script>
+
 <body>
   <div class="header">
     <h1>Smart Houm</h1>
@@ -21,9 +22,11 @@
 
         <output id="amb_lit"></output> </h3>
       <output id="lit_on"></output>
-      <button type="submit" onClick="doLightOn()">Vypnúť</button>
+      <button type="submit" onClick="doLightOff()">Vypnúť</button>
       <output id="lit_off"></output>
-      <button type="submit" onClick="doLightOff()">Zapnúť</button>
+      <button type="submit" onClick="doLightOn()">Zapnúť</button>
+      <output id="lit_aut"></output>
+      <button type="submit" onClick="doLightAut()">Automat</button>
 
     </div>
     <div class="column" style="background-color:#2A363B;">

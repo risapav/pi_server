@@ -7,17 +7,21 @@ const SR_TX_TIMING = 1000
 const SR_RX_TIMING = 1000
 //telegram odosielany do Arduina
 var tx_msg = {
-  //otvorit garaz
+  // povel otvorit garaz
   gar_on: false,
-  //zatvorit garaz
+  // povel zastavit garaz
+  gar_stop: false,
+  // povel zatvorit garaz
   gar_off: false,
-  //zapnut svetla
+  // povel zapnut svetla
   lit_on: false,
-  //vypnut svela
+  // povel vypnut svela
   lit_off: false,
-  //pozadovana teplota chcem zamenit
+  // povel svetlo automat
+  lit_aut: false,
+  // povel zmenit nastavenie teploty
   tem_set: false,
-  //pozadovana teplota setpoint
+  // hodnota nastavenej teploty
   tem_spt: 0
 }
 // ak sa nieco zmenilo v poveloch pre arduino
@@ -50,36 +54,44 @@ setInterval(() => {
     cmd_set = false
     //odosli dotaz na server so zakodovanim JSON tx_msg
     postData('/tx', tx_msg)
-      //.then(data => console.log("/tx data > ", data)) // JSON-string from `response.json()` call
+      .then(data => console.log("/tx data > ", data)) // JSON-string from `response.json()` call
       .catch(error => {
-        console.error(error, tx_msg)
+        console.error(error)
       })
     //po odoslani vynuluj vsetky poziadavky
-    //otvorit garaz
+    // povel otvorit garaz
     tx_msg.gar_on = false
-    //zatvorit garaz
+    // povel otvorit garaz
+    tx_msg.gar_stop = false
+    // povel zatvorit garaz
     tx_msg.gar_off = false
-    //zapnut svetla
+    // povel zapnut svetla
     tx_msg.lit_on = false
-    //vypnut svela
+    // povel vypnut svela
     tx_msg.lit_off = false
-    //pozadovana teplota chcem zamenit
+    // povel svetlo automat
+    tx_msg.lit_aut = false
+    // povel zmenit nastavenie teploty
     tx_msg.tem_set = false
     //pozadovana teplota setpoint
     tx_msg.tem_spt = 0
   }
   //toto opakuj kazdu sekundu ak mas co poslat
 }, SR_TX_TIMING)
-//telegram prijimany do Arduina
+//telegram prijimany z Arduina, vsetky feedbacky z arduina
 var rx_msg = {
   //feedback garaz otvorena
   gar_on: false,
   //feedback garaz zatvorena
   gar_off: false,
+  //feedback garaz zastavena
+  gar_stop: false,
   //feedback svetla zapnute
   lit_on: false,
   //feedback svetla vypnute
   lit_off: false,
+  //feedback svetla automat
+  lit_aut: false,
   //feedback nastavena teplota
   tem_spt: 0,
   //feedback aktualna teplota
@@ -125,7 +137,6 @@ function refreshPage() { // eslint-disable-line no-unused-vars
   loadRxData()
 }
 // povel na zapnutie svetla
-/*eslint no-unused-vars: "error"*/
 function doLightOn() { // eslint-disable-line no-unused-vars
   //zapnut svetla
   tx_msg.lit_on = true
@@ -136,6 +147,13 @@ function doLightOn() { // eslint-disable-line no-unused-vars
 function doLightOff() { // eslint-disable-line no-unused-vars
   //vypnut svela
   tx_msg.lit_off = true
+  //vykonaj
+  cmd_set = true
+}
+// povel na vypnutie svetla
+function doLightAut() { // eslint-disable-line no-unused-vars
+  //vypnut svela
+  tx_msg.lit_aut = true
   //vykonaj
   cmd_set = true
 }
@@ -150,6 +168,13 @@ function doGarageOpen() { // eslint-disable-line no-unused-vars
 function doGarageClose() { // eslint-disable-line no-unused-vars
   //zatvorit garaz
   tx_msg.gar_off = true
+  //vykonaj
+  cmd_set = true
+}
+// povel na zatvorenie garaze
+function doGarageStop() { // eslint-disable-line no-unused-vars
+  //zatvorit garaz
+  tx_msg.gar_stop = true
   //vykonaj
   cmd_set = true
 }

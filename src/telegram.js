@@ -3,13 +3,20 @@
 // "strict": "error"
 "strict mode"
 //definicia konstant
-const MSG_LEN = 24 //dlzka bufferu telegramu v bajtoch
-const BUF_LEN = MSG_LEN * 2 + 1 //MSG_LEN * 2 + 1
-const ADD = 0x41 //temp char
-const STX = 0x02 //MAGIC CHAR start of telegram
-const ETX = 0x03 //MAGIC CHAR end of telegram
-const START = 0 //index prveho bajtu v buffere
-const STOP = MSG_LEN - 1 //index posledneho bajtu v buffere
+//dlzka bufferu telegramu v bajtoch
+const MSG_LEN = 24;
+//MSG_LEN * 2 + 1
+const BUF_LEN = MSG_LEN * 2 + 1;
+//temp char
+const ADD = 0x41;
+//MAGIC CHAR start of telegram
+const STX = 0x02;
+//MAGIC CHAR end of telegram
+const ETX = 0x03;
+//index prveho bajtu v buffere
+const START = 0;
+//index posledneho bajtu v buffere
+const STOP = MSG_LEN - 1;
 //telegram prijaty z Arduina
 var RX_Message = {
   //allways STX
@@ -53,7 +60,6 @@ var TX_Message = {
 }
 
 class Telegram {
-
   constructor() {
     // create an ArrayBuffer with a size in bytes
     this.msg = new ArrayBuffer(MSG_LEN)
