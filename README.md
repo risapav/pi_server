@@ -11,6 +11,12 @@ V každom prípade na začiatok je potrebné mať nainštalované nejaké užito
 * **Git** version control system [git](https://git-scm.com/)
 * **IDE** vývojové prostredie napr. [vscode](https://code.visualstudio.com/)
 
+archlinux:
+```sh
+pacman -S nodejs npm git
+yay -S vscodium-bin
+```
+
 Potom je potrebné v do home adresára v užívateľskom prístupe **(v žiadnom prípade nie ako root !)** naklonovať projekt.
 
 Predpokladám, že funguješ v linuxe.
