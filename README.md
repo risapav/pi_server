@@ -1,10 +1,10 @@
 # pi_server
 
-Projekt bol vytvorený v prostredí PlatformIO IDE. Najprv bol vyvíjaný v multifunkčnom editore Atom. Kedže Atom v čase vývoja mal množstvo bugov, plynule vývoj prešiel do prostredia Vscode aj napriek výhradám v politike firmy Microsoft, ktorá je tvorcom prostredia Vscode. Musím uznať, že Vscode je špičkový software. Umož\uje integrovať množstvo nástrojov a užitočných doplnkov pre urýchlenie vývoja.
+Projekt bol vytvorený v prostredí **PlatformIO IDE**. Najprv bol vyvíjaný v multifunkčnom editore **Atom**. Kedže Atom v čase vývoja mal množstvo bugov, plynule vývoj prešiel do prostredia **Vscode** aj napriek výhradám v politike firmy Microsoft, ktorá je tvorcom prostredia Vscode. Musím uznať, že Vscode je špičkový software. Umožňuje integrovať množstvo nástrojov a užitočných doplnkov pre urýchlenie vývoja.
 
 ## Quick start
 
-Na začiatok je potrebné mať nainštalovaný program git. Je úplne jedno či pracujeme pod Linuxom alebo Windowsom. Ja osobne preferujem Ubuntu linux, môj syn fachčí pod Arch linuxom. Systém Windows postupne opúšťam, nakoľko ma nebaví čakať na "samoinštalácie" tohto spotvoreného systému.
+Na začiatok je potrebné mať nainštalovaný program **git**. Je úplne jedno či pracujeme pod Linuxom alebo Windowsom. Ja osobne preferujem Ubuntu linux, môj syn fachčí pod Arch linuxom. Systém Windows postupne opúšťam, nakoľko ma nebaví čakať na "samoinštalácie" tohto spotvoreného systému.
 
 Predpokladám, že funguješ v linuxe.
 
