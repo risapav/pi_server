@@ -41,7 +41,7 @@ Nakoniec vojdi do projektu a spusti aplikaciu nasledovne:
 
 Aplikácia je napísaná v javascripte a je určená pre spustenie pod nodejs. Na spustenie je pripravený bash script runme.sh . Javascript je použitý podľa syntaxe ECMA 2016
 
-As a general rule, be sure to read through all of the source code yourself and make sure you understand what is happening.
+As a general rule, be sure to read through all of the source code yourself and make sure you understand what is happening. Potrebné poznámky o algoritme sú vpísané do zdrojových textov.
 
 | Directories          | Purpose                    |
 | :------------------- | :------------------------- |
