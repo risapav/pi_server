@@ -48,6 +48,7 @@ git clone https://github.com/risapav/pi_server && cd pi_server && npm install
 
 Nakoniec vojdi do projektu a spusti aplikaciu nasledovne:
 ```sh
+cd ~/pi_server
 ~/pi_server$ ./runme.sh
 ```
 
