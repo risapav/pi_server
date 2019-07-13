@@ -40,13 +40,9 @@ Potom je potrebné do home adresára v užívateľskom prístupe **(v žiadnom p
 Predpokladám, že funguješ v linuxe.
 Otvor terminál a inštaluj aplikáciu nasledovne:
 
-ubuntu:
+linux:
 ```sh
-git clone https://github.com/risapav/pi_server && cd pi_server && npm install
-```
-
-archlinux:
-```sh
+cd ~
 git clone https://github.com/risapav/pi_server && cd pi_server && npm install
 ```
 
