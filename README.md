@@ -29,6 +29,10 @@ git clone https://github.com/risapav/pi_server && cd pi_server && npm install
 yay -S vscodium-bin
 ```
 
+Nakoniec vojdi do projektu a spusti aplikaciu nasledovne:
+```sh
+./runme.sh
+```
 
 
 -- koniec --
