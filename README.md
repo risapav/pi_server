@@ -1,6 +1,9 @@
 # pi_server
 
-Projekt bol vytvorený v prostredí **PlatformIO IDE**. Najprv bol vyvíjaný v multifunkčnom editore **Atom**. Kedže Atom v čase vývoja mal množstvo bugov, plynule vývoj prešiel do prostredia [Vscode](https://code.visualstudio.com/) aj napriek výhradám v politike firmy Microsoft, ktorá je tvorcom prostredia Vscode. Musím uznať, že Vscode je špičkový software. Umožňuje integrovať množstvo nástrojov a užitočných doplnkov pre urýchlenie vývoja.
+Pi_server projekt bol vytvorený ako súčasť školského projektu "Smart Home". Cieľom celého projektu bolo demonštrovať použitie modulov Arduino na riadenie zariadení v domácnosti. Dielčia časť Pi_server rieši HTTP komunikáciu užívateľa a komunikuje s Arduinom cez sériovú linku. Odosiela povely a tiež monitoruje stav ovládaných periférií.
+
+## Predslov
+Projekt bol vytvorený v prostredí [PlatformIO IDE](https://platformio.org/). Najprv bol vyvíjaný v multifunkčnom editore [Atom](https://atom.io/). Kedže Atom v čase vývoja mal množstvo bugov, plynule vývoj prešiel do prostredia [Vscode](https://code.visualstudio.com/), aj napriek výhradám v politike firmy Microsoft, ktorá je tvorcom prostredia Vscode. Musím uznať, že Vscode je špičkový software. Umožňuje integrovať množstvo nástrojov a užitočných doplnkov pre urýchlenie vývoja.
 
 ## Quick start
 
@@ -50,6 +53,7 @@ As a general rule, be sure to read through all of the source code yourself and m
 | [src](./src)         | Backend application files  |
 | [views](./views)     | Handlebars templates       |
 
+Schema súborov a adresárov v projekte:
 ```yaml
 public:
     │
@@ -62,7 +66,7 @@ src:
     │
     └── app.js
         telegram.js
-views
+views:
     │
     └── index.hbs
 ```
