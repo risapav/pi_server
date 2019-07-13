@@ -18,14 +18,17 @@ Otvor terminál
 
 [Clone](https://github.com/risapav/pi_server)
 
+ubuntu:
 ```sh
 git clone https://github.com/risapav/pi_server && cd pi_server && npm install
 ```
 
-Install the dependencies.
+archlinux:
 ```sh
-npm install
+git clone https://github.com/risapav/pi_server && cd pi_server && npm install
+yay -S vscodium-bin
 ```
+
 
 
 -- koniec --
