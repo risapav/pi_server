@@ -4,31 +4,31 @@ Projekt bol vytvorený v prostredí **PlatformIO IDE**. Najprv bol vyvíjaný v 
 
 ## Quick start
 
-Na začiatok je potrebné mať nainštalovaný program **git**. Je úplne jedno či pracujeme pod Linuxom alebo Windowsom. Ja osobne preferujem Ubuntu linux, môj syn fachčí pod Arch linuxom. Systém Windows postupne opúšťam, nakoľko ma nebaví čakať na "samoinštalácie" tohto spotvoreného systému.
+Je úplne jedno či pracujeme pod Linuxom alebo Windowsom. Ja osobne preferujem Ubuntu linux, môj syn fachčí pod Arch linuxom. Systém Windows postupne opúšťam, nakoľko ma nebaví čakať na "samoinštalácie" tohto spotvoreného systému.
+
+V každom prípade na začiatok je potrebné mať nainštalované nejaké užitočné tools-y:
+* **Nodejs** [nodejs](https://nodejs.org/en/download/) s doplnkom **Npm** [npm](https://www.npmjs.org/)
+* **Git** version control system [git](https://git-scm.com/)
+* **IDE** vývojové prostredie napr. [vscode](https://code.visualstudio.com/)
+
+Potom je potrebné v do home adresára v užívateľskom prístupe **(v žiadnom prípade nie ako root !)** naklonovať projekt.
 
 Predpokladám, že funguješ v linuxe.
-
-Takže najprv nainštaluj GIT:
-
 Otvor terminál
 
-
-
-[Clone](https://github.com/risapav/emb_web_app)
+[Clone](https://github.com/risapav/pi_server)
 
 ```sh
-git clone https://github.com/risapav/emb_web_app && cd emb_web_app && npm install
+git clone https://github.com/risapav/pi_server && cd pi_server && npm install
 ```
-
-Make sure [Node.js](http://nodejs.org/) and [npm](https://www.npmjs.org/) are
-[installed](http://nodejs.org/download/).
-
 
 Install the dependencies.
 ```sh
 npm install
 ```
 
+
+-- koniec --
 ## Guide
 
 There are additional `README.md` files all throughout the application. However, the documentation is a work in progress.
