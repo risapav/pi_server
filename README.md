@@ -31,7 +31,7 @@ yay -S vscodium-bin
 
 Nakoniec vojdi do projektu a spusti aplikaciu nasledovne:
 ```sh
-./runme.sh
+~/pi_server$ ./runme.sh
 ```
 
 
