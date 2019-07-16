@@ -292,7 +292,7 @@ const {
 
 //spusti HTTP server
 server({
-  //engine: 'hbs',
+  engine: 'hbs',
   port: 8080
 }, [
   error(ctx => status(500).send(ctx.error.message)),
