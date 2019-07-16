@@ -45,6 +45,12 @@ linux:
 cd ~
 git clone https://github.com/risapav/pi_server && cd pi_server && npm install
 ```
+Následne je vhodné aktualizovať knižnice na aktuálne verzie
+```sh
+cd ~/pi_server
+$ npx npm-check-updates -u
+$ npm install 
+```
 
 Nakoniec vojdi do projektu a spusti aplikaciu nasledovne:
 ```sh

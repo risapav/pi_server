@@ -143,10 +143,12 @@ const init_arduino_communication = () => {
     comport = '/dev/ttyACM0'
   }
   //urob listing vsetkych portov
+  /*
   SerialPort.list().then(
     ports => ports.forEach(console.log),
     err => console.error(err)
   )
+  */
   // otvor a nastav seriovy port
   console.log('pripravený port: ', comport)
   const port = new SerialPort(comport, {
