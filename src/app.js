@@ -292,8 +292,8 @@ const {
 
 //spusti HTTP server
 server({
-  port: 8080,
-  engine: 'hbs'
+  //engine: 'hbs',
+  port: 8080
 }, [
   error(ctx => status(500).send(ctx.error.message)),
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
