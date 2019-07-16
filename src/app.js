@@ -148,6 +148,7 @@ const init_arduino_communication = () => {
     err => console.error(err)
   )
   // otvor a nastav seriovy port
+  console.log('pripravený port: ', comport)
   const port = new SerialPort(comport, {
     baudRate: 115200
   }, err => {
@@ -155,6 +156,7 @@ const init_arduino_communication = () => {
       return console.log('Error: ', err.message)
     }
   })
+  console.log('otvorenie port: ', port)
   // pri prichodzich spravach nas zaujima len string ukonceny znakom '\n'
   const parser = port.pipe(new Readline({
     delimiter: '\n'
