@@ -158,7 +158,7 @@ const init_arduino_communication = () => {
       return console.log('Error: ', err.message)
     }
   })
-  console.log('otvorenie port: ', port)
+  //console.log('otvorenie port: ', port)
   // pri prichodzich spravach nas zaujima len string ukonceny znakom '\n'
   const parser = port.pipe(new Readline({
     delimiter: '\n'
