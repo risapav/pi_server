@@ -303,7 +303,6 @@ server({
 
     let filename = ctx.options.public + "/js/" + ctx.params.file;
     console.log(filename);
-    console.log(ctx);
     return type('application/json').file(filename);
   }),
 
