@@ -294,9 +294,19 @@ server({
   engine: 'hbs',
   port: 8080
 }, [
+
+  get('/js/:file', ctx => {
+    console.log(ctx.params.page);  // hello
+    console.log(ctx.query.name);   // Francisco
+    console.log(ctx);   // Francisco
+    return { file: ctx.params.file, name: ctx.query.name };
+  }),
+
   //ctx => { throw new Error('I am an error!'); },
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
-  get('/js/main.js', ctx => type('text/html').file('/js/main.js')),  // eslint-disable-line no-unused-vars
+ // get('/js/main.js', ctx => type('text/html').file('main.js')),  // eslint-disable-line no-unused-vars
+ // get('/js/jquery-3.3.1.min.js', ctx => type('text/html').file('jquery-3.3.1.min.js')),  // eslint-disable-line no-unused-vars
+  get('/css/default.css', ctx => type('text/html').file('default.css')),  // eslint-disable-line no-unused-vars
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
     //nastav prislusny bit v 16 bit commande
