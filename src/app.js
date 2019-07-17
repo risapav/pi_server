@@ -295,7 +295,7 @@ server({
 }, [
   //ctx => { throw new Error('I am an error!'); },
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
-  get('js/main.js', ctx => file('js/main.js')), 
+  get('/js/main.js', ctx => file('js/main.js')), 
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
     //nastav prislusny bit v 16 bit commande
