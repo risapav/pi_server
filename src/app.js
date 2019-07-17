@@ -143,12 +143,10 @@ const init_arduino_communication = () => {
     comport = '/dev/ttyACM0'
   }
   //urob listing vsetkych portov
-  /*
   SerialPort.list().then(
     ports => ports.forEach(console.log),
     err => console.error(err)
   )
-  */
   // otvor a nastav seriovy port
   console.log('pripravený port: ', comport)
   const port = new SerialPort(comport, {
@@ -297,6 +295,7 @@ server({
 }, [
   //ctx => { throw new Error('I am an error!'); },
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
+  get('js/main.js', ctx => file('js/main.js')), 
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
     //nastav prislusny bit v 16 bit commande
