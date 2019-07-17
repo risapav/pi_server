@@ -301,7 +301,7 @@ server({
     console.log("------------------------------------------");
     console.log(ctx.params.file); 
 
-    let filename = "/public/js/" + ctx.params.file;
+    let filename = ctx.options.public + "/js/" + ctx.params.file;
     console.log(filename);
     console.log(ctx);
     return type('application/json').file(filename);
@@ -311,7 +311,7 @@ server({
     console.log("------------------------------------------");
     console.log(ctx.params.file);  
 
-    let filename = "/public/css/" + ctx.params.file;
+    let filename = ctx.options.public + "/css/" + ctx.params.file;
     console.log(filename);
     return type('text/html').file(filename);
   }),
