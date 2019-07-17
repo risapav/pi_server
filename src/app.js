@@ -299,18 +299,21 @@ server({
 
   get('/js/:file', ctx => {
     console.log("------------------------------------------");
-    console.log(ctx.params.file);  // hello
-//    console.log(ctx.query.name);   // Francisco
- //   console.log(ctx);   // Francisco
-    return type('application/json').file("/public/js/" + ctx.params.file);
+    console.log(ctx.params.file); 
+
+    let filename = "/public/js/" + ctx.params.file;
+    console.log(filename);
+    console.log(ctx);
+    return type('application/json').file(filename);
   }),
 
   get('/css/:file', ctx => {
     console.log("------------------------------------------");
-    console.log(ctx.params.file);  // hello
-//    console.log(ctx.query.name);   // Francisco
- //   console.log(ctx);   // Francisco
-    return type('text/html').file("/public/css/" + ctx.params.file);
+    console.log(ctx.params.file);  
+
+    let filename = "/public/css/" + ctx.params.file;
+    console.log(filename);
+    return type('text/html').file(filename);
   }),
 
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
