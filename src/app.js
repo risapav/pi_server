@@ -282,20 +282,20 @@ const {
   error,
   get,
   post
-} = require('server/router')
+} = server.router //require('server/router')
 
 const {
   status,
   render,
   json
-} = require('server/reply')
+} = server.reply //require('server/reply')
 
 //spusti HTTP server
 server({
   engine: 'hbs',
   port: 8080
 }, [
-  //error(ctx => status(500).send(ctx.error.message)),
+  ctx => { throw new Error('I am an error!'); },
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
@@ -312,5 +312,6 @@ server({
       'ok': true
     })
   }),
+  error(ctx => status(500).send(ctx.error.message)),
   get(ctx => status(404)) // eslint-disable-line no-unused-vars
 ])
