@@ -296,7 +296,7 @@ server({
   port: 8080
 }, [
   error(ctx => status(500).send(ctx.error.message)),
-  get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
+  get('/h', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
     //nastav prislusny bit v 16 bit commande
