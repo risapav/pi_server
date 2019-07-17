@@ -280,13 +280,14 @@ const {
   error,
   get,
   post
-} = server.router //require('server/router')
+} = server.router
 
 const {
   status,
+  file,
   render,
   json
-} = server.reply //require('server/reply')
+} = server.reply
 
 //spusti HTTP server
 server({
@@ -294,8 +295,8 @@ server({
   port: 8080
 }, [
   //ctx => { throw new Error('I am an error!'); },
-  get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
-  get('/js/main.js', ctx => type('text/html').file('./public/js/main.js')), 
+  get('/', ctx => render('./views/index.hbs')), // eslint-disable-line no-unused-vars
+  get('/js/main.js', ctx => type('text/html').file('./public/js/main.js')),  // eslint-disable-line no-unused-vars
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
     //nastav prislusny bit v 16 bit commande
