@@ -302,14 +302,18 @@ server({
     console.log(ctx.params.file);  // hello
 //    console.log(ctx.query.name);   // Francisco
  //   console.log(ctx);   // Francisco
-    return type('application/json').file(ctx.params.file);//{ file: ctx.params.file, name: ctx.query.name };
+    return type('application/json').file("/public/js/" + ctx.params.file);
   }),
 
-  //ctx => { throw new Error('I am an error!'); },
+  get('/css/:file', ctx => {
+    console.log("------------------------------------------");
+    console.log(ctx.params.file);  // hello
+//    console.log(ctx.query.name);   // Francisco
+ //   console.log(ctx);   // Francisco
+    return type('text/html').file("/public/css/" + ctx.params.file);
+  }),
+
   get('/', ctx => render('index.hbs')), // eslint-disable-line no-unused-vars
- // get('/js/main.js', ctx => type('text/html').file('main.js')),  // eslint-disable-line no-unused-vars
- // get('/js/jquery-3.3.1.min.js', ctx => type('text/html').file('jquery-3.3.1.min.js')),  // eslint-disable-line no-unused-vars
-  get('/css/default.css', ctx => type('text/html').file('default.css')),  // eslint-disable-line no-unused-vars
   get('/rx', ctx => json(rx_msg)), // eslint-disable-line no-unused-vars
   post('/tx', ctx => {
     //nastav prislusny bit v 16 bit commande
