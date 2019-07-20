@@ -143,12 +143,10 @@ const init_arduino_communication = () => {
     comport = '/dev/ttyACM0'
   }
   //urob listing vsetkych portov
-  /*
   SerialPort.list().then(
     ports => ports.forEach(console.log),
     err => console.error(err)
   )
-  */
   // otvor a nastav seriovy port
   console.log('pripravený port: ', comport)
   const port = new SerialPort(comport, {
@@ -300,8 +298,8 @@ server({
 }, [
 
   get('/js/:file', ctx => {
-    console.log("------------------------------------------");
-    console.log(ctx.params.file); 
+  // console.log("------------------------------------------");
+  // console.log(ctx.params.file); 
 
     let filename = ctx.options.public + "/js/" + ctx.params.file;
     console.log(filename);
@@ -309,8 +307,8 @@ server({
   }),
 
   get('/css/:file', ctx => {
-    console.log("------------------------------------------");
-    console.log(ctx.params.file);  
+  // console.log("------------------------------------------");
+  // console.log(ctx.params.file);  
 
     let filename = ctx.options.public + "/css/" + ctx.params.file;
     console.log(filename);
