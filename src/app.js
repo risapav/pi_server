@@ -293,6 +293,8 @@ const {
 
 //spusti HTTP server
 server({
+  public: "../public",
+  views:"../views",
   engine: 'hbs',
   port: 8080
 }, [
