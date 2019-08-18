@@ -150,6 +150,18 @@ function redrawPage() { // eslint-disable-line no-unused-vars
   }else{ 
     $("#zatGar").css("backgroundColor",farba1)
   }
+
+  if(rx_msg.lit_on{ 
+    $("#litOn").css("backgroundColor",farba2)
+  }else{ 
+    $("#litOn").css("backgroundColor",farba1)
+  }
+
+  if(rx_msg.lit_off){ 
+    $("#litOff").css("backgroundColor",farba2)
+  }else{ 
+    $("#litOff").css("backgroundColor",farba1)
+  }
 }
 // nacita data zo servera
 /*eslint no-unused-vars: "error"*/
