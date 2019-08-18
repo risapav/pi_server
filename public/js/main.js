@@ -131,9 +131,9 @@ function redrawPage() { // eslint-disable-line no-unused-vars
     $el.val(rx_msg[key])
   })
   if(rx_msg.lit_aut){ 
-    $("#litAut").css("backgroundColor",0x21b9c4)
+    $("#litAut").css("backgroundColor","red")
   }else{ 
-    $("#litAut").css("backgroundColor",0xa12828)
+    $("#litAut").css("backgroundColor","green")
   }
 }
 // nacita data zo servera

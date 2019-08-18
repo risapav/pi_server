@@ -34,7 +34,7 @@ h3 {
 }
 
 .bl3 {
-  . float: center;
+  float: center;
   width: 100.0%;
   padding: 1px;
   /*  height: 300px; Should be removed. Only for demonstration */
