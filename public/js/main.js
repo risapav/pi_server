@@ -151,7 +151,7 @@ function redrawPage() { // eslint-disable-line no-unused-vars
     $("#zatGar").css("backgroundColor",farba1)
   }
 
-  if(rx_msg.lit_on{ 
+  if(rx_msg.lit_on){ 
     $("#litOn").css("backgroundColor",farba2)
   }else{ 
     $("#litOn").css("backgroundColor",farba1)
