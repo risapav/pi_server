@@ -3,8 +3,8 @@
 // "strict": "error"
 "strict mode"
 //kazdych 1000ms odosle telegram do servera
-const SR_TX_TIMING = 400
-const SR_RX_TIMING = 400
+const SR_TX_TIMING = 100
+const SR_RX_TIMING = 100
 //telegram odosielany do Arduina
 var tx_msg = {
   // povel otvorit garaz
