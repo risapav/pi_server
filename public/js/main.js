@@ -130,6 +130,11 @@ function redrawPage() { // eslint-disable-line no-unused-vars
     let $el = $('#' + key)
     $el.val(rx_msg[key])
   })
+  if(rx_msg.lit_aut){ 
+    $("#litAut").css("backgroundColor",rgb(161, 80, 80))
+  }else{ 
+    $("#litAut").css("backgroundColor",rgb(161, 40, 40))
+  }
 }
 // nacita data zo servera
 /*eslint no-unused-vars: "error"*/

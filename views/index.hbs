@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <body bgcolor="#363636"></body>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,44 +12,56 @@
 
 <body>
   <div class="header">
-    <h1>Smart Houm</h1>
-    <button type="submit" onClick="refreshPage()">Refresh Button</button>
-  </div>
-
   <div class="row" style="color:#fff;">
-    <div class="column" style="background-color:#2A363B">
-      <h3>Svetlá</h3>
-      <h3> <label for="scales">Okolitý jas</label>
+    <h1>SMART HOUM</h1>
+  </div>
+   <!--  <button type="submit" onClick="refreshPage()">Refresh Button</button> -->
+  </div>
+  <div class="column" style="background-color:#363636;">
+    </div>
 
-        <output id="amb_lit"></output> </h3>
-      <output id="lit_on"></output>
-      <button type="submit" onClick="doLightOff()">Vypnúť</button>
-      <output id="lit_off"></output>
-      <button type="submit" onClick="doLightOn()">Zapnúť</button>
-      <output id="lit_aut"></output>
-      <button type="submit" onClick="doLightAut()">Automat</button>
+  
+  <div class="row" style="color:#fff;">
+    <div class="column" style="background-color:rgba(47, 149, 153, 0.534) ">
+      <h2>Optimálne osvetlenie</h2>
+      <h5> <label for="scales">Množstvo svetla</label> 
+
+         <output id="amb_lit"></output>%</h3>
+      <!-- <output id="lit_on"></output> -->
+      <button class="button" type="submit" onClick="doLightOff()">Vypnúť svtelo</button>
+        <!-- <output id="lit_off"></output> -->
+      <button class="button" type="submit" onClick="doLightOn()">Zapnúť svetlo</button>
+      <!-- <output id="lit_aut"></output> -->
+      <button id="litAut" class="button" type="submit" onClick="doLightAut()">Automaticky</button>
 
     </div>
-    <div class="column" style="background-color:#2A363B;">
-      <h3>Garáž</h3>
+    <div class="column" style="background-color:#363636;">
+    </div>
+
+    <div class="column" style="background-color:rgba(47, 149, 153, 0.534) ;">
+      <div class="row" style="color:#fff;">
+      <h2>Garáž</h2>
+    </div>
       <div class="table_rooms">
-        <h3> <output id="gar_on"></output>
-          <button type="submit" onClick="doGarageOpen()">Otvoriť</button>
-          <output id="gar_off"></output>
-          <button type="submit" onClick="doGarageClose()">Zatvoriť</button> </h3>
+        <!--<h3> <output id="gar_on"></output>-->
+          <button class="button" type="submit" onClick="doGarageOpen()">Otvor</button>
+        <!--<output id="gar_off"></output> -->
+          <button class="button"type="submit" onClick="doGarageClose()">Zatvor</button> </h3>
       </div>
 
     </div>
-    <div class="column" style="background-color:#fff;">
+    <div class="column" style="background-color:#363636;">
     </div>
 
   </div>
 
   </div>
   <div class="row" style="color:#fff;">
-    <div class="column bl3" style="background-color:# 2A363B;">
-      <h3>Teplota izby</h3>
-      <h3> Nastavená teplota / Aktuálna teplota <output id="tem_spt"></output>
+    <div class="column bl3" style="background-color:rgba(47, 149, 153, 0.534) ;">
+      <h2>Teplota izby</h2>
+      <h4> Nastavená teplota <output id="tem_spt"></output> <h4>
+
+       Aktuálna teplota </output>
         <output id="tem_act"></output> </h3>
       <!--      <form> -->
       <h3>Nastav teplotu: (rozsah 0 až 50):</h3>
@@ -56,7 +69,7 @@
       <h3> <input id="in_tem_spt" type="number" onClick="doTempSet()" name="setpoint" min="0" max="50" value="20"><br> </h3>
 
     </div>
-    <div class="column" style="background-color:#fff;">
+    <div class="column" style="background-color:#363636;">
     </div>
   </div>
   </div>

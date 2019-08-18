@@ -1,3 +1,5 @@
+/*@media (max-width: 1200px) {*/
+
 * {
   box-sizing: border-box;
 }
@@ -12,28 +14,29 @@ h3 {
 
 /* Style the header */
 .header {
-  background-color: #FFF;
-  padding: 30px;
+  background-color: rgba(47, 149, 153, 0.534) ;
+  padding: 10px;
   text-align: center;
-  font-size: 35px;
+  font-size: 40px;
+  border-radius: 15px;
 }
 
 /* Create three equal columns that floats next to each other */
 .column {
+  column-count: 1;
   text-align: center;
+  font-size: 23px;
   border-radius: 20px;
   float: left;
-  width: 50.0%;
-  background: #2A363B;
-  padding: 10px;
-  /*width: 200px;*/
-  /*height: 150px; */
+  width: 100%;
+  background: #ffffff;
+  padding: 25px;
 }
 
 .bl3 {
   . float: center;
   width: 100.0%;
-  padding: 10px;
+  padding: 1px;
   /*  height: 300px; Should be removed. Only for demonstration */
 }
 
@@ -46,15 +49,43 @@ h3 {
 
 /* Style the footer */
 .footer {
-  background-color: #363636;
-  border-radius: 25px;
-  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.527) ;
+  border-radius: 1000px;
+  padding: 1px;
   text-align: center;
 }
 
 /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-@media (max-width: 600px) {
+/*
   .column {
     width: 100%;
   }
-}
+  */
+  .btn {
+    border: none; /* Remove borders */
+    color: white; /* Add a text color */
+    padding: 14px 28px; /* Add some padding */
+    cursor: pointer; /* Add a pointer cursor on mouse-over */
+  }
+  
+  .button {
+    background-color: rgb(161, 40, 40);
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+  }
+
+  .button:hover {
+    background-color: #f1f1f1;
+  }
+
+/*}*/
+
+
+  
