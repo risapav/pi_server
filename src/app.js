@@ -4,7 +4,7 @@
 "strict mode"
 //konstanty pre komunikovanie s ARDUINOM
 //kazdych 1000ms odosle telegram do Arduina
-const AR_TX_TIMING = 1000
+const AR_TX_TIMING = 400
 //konstanty pre kodovanie povelu pre Arduino
 const CMD = {
   // povel garaz otvorit
