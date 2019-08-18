@@ -130,10 +130,25 @@ function redrawPage() { // eslint-disable-line no-unused-vars
     let $el = $('#' + key)
     $el.val(rx_msg[key])
   })
+
+  let farba1 = "#21b9c4"
+  let farba2 = "red"
   if(rx_msg.lit_aut){ 
-    $("#litAut").css("backgroundColor","red")
+    $("#litAut").css("backgroundColor",farba2)
   }else{ 
-    $("#litAut").css("backgroundColor","green")
+    $("#litAut").css("backgroundColor",farba1)
+  }
+
+  if(rx_msg.gar_on){ 
+    $("#otvGar").css("backgroundColor",farba2)
+  }else{
+    $("#otvGar").css("backgroundColor",farba1)
+  }
+ 
+  if(rx_msg.gar_off){ 
+    $("#zatGar").css("backgroundColor",farba2)
+  }else{ 
+    $("#zatGar").css("backgroundColor",farba1)
   }
 }
 // nacita data zo servera
