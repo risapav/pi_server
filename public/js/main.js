@@ -131,7 +131,7 @@ function redrawPage() { // eslint-disable-line no-unused-vars
     $el.val(rx_msg[key])
   })
 
-  let farba1 = "#21b9c4"
+  let farba1 = "#ddd"
   let farba2 = "red"
   if(rx_msg.lit_aut){ 
     $("#litAut").css("backgroundColor",farba2)
