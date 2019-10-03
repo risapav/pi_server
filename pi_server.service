@@ -1,0 +1,18 @@
+[Unit]
+Description=Pi_server Web Server
+
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/amavet/pi_server/runme.sh
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
+
+
